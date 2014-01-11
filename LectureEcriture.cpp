@@ -1,5 +1,4 @@
 
-
 #include "LectureEcriture.h"
 
 LigneDeCommande LectureEcriture::ProchainLog()
@@ -7,7 +6,7 @@ LigneDeCommande LectureEcriture::ProchainLog()
 	LigneDeCommande ligneEnCours;
 	ligneEnCours.error=false;
 	int compteur=0;
-	int compteurPourSet=0;
+	unsigned int compteurPourSet=0;
 	string s="",c="";
 	getline(myFile,s);
 	int tailleLigne=s.length();
@@ -20,7 +19,7 @@ LigneDeCommande LectureEcriture::ProchainLog()
 
 
 	getline(myFile,s,' ');
-	if((s=='C' && combienMot == 5)|| (s=='R' && combienMot == 6) || (s=='L' && combienMot == 6) || (s=="PL") || s=="MOVE" ){
+	if((s=="C" && combienMot == 5)|| (s=="R" && combienMot == 6) || (s=="L" && combienMot == 6) || (s=="PL") || s=="MOVE" ){
 		ligneEnCours.type=s;
 		getline(myFile,ligneEnCours.nom,' ');
 		for(int i=0;i<combienMot-2;i++){
@@ -30,7 +29,7 @@ LigneDeCommande LectureEcriture::ProchainLog()
 			string h;
 		    hh << c;
 		    hh >> h;
-			if(c.length()==h.length() && c>0) // a partir du 3eme element, verifier si c un entier ou pas
+			if(c.length()==h.length()) // a partir du 3eme element, verifier si c un entier ou pas
 			ligneEnCours.points.push_back (value);
 			else
 				ligneEnCours.error=true;  break;//sortie du boucle for
@@ -57,7 +56,7 @@ LigneDeCommande LectureEcriture::ProchainLog()
 		if(c.substr(c.length()-4,4) == ".txt")
 			ligneEnCours.fileName=c;
 		else
-			ligneEnCours.error=true;  break;
+			ligneEnCours.error=true;
 	}
 	else
 		ligneEnCours.error=true;
