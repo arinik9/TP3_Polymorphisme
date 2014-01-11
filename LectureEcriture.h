@@ -3,6 +3,8 @@
 #include <fstream>
 #include <algorithm>
 #include <set>
+#include <vector>
+#include<sstream>
 #ifndef LECTUREECRITURE_H_
 #define LECTUREECRITURE_H_
 
