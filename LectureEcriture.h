@@ -15,10 +15,11 @@ struct LigneDeCommande
 	string nom;
 	string type;
 	//string rayon;
-	vector<int> points;
+	vector<long> points;
 	set<string> NomObjetUnique; // MAP peut-etre?????
-	string commande;
 	string fileName;
+	int tailleLigne;
+	int lengthFile;
 	bool error;
 };
 
@@ -26,7 +27,7 @@ class LectureEcriture {
 private:
 	ifstream myFile;
 public:
-	LigneDeCommande ProchainLog();
+	LigneDeCommande ProchainLigne();
 	LectureEcriture(string nomFichier);
 	bool EstFini();
 	virtual ~LectureEcriture();
