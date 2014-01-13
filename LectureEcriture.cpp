@@ -1,5 +1,4 @@
 
-
 #include "LectureEcriture.h"
 
 LigneDeCommande LectureEcriture::ProchainLigne()
@@ -13,7 +12,10 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 		string s="",c="",u="";
 
 	string input="";
-	getline(myFile,input);
+	if(enVeine==1)	//commandeManuel.length()==0
+		input=commandeManuel; // on saisie les commandes par la console donc on utilise cela
+	else
+		getline(myFile,input); //on saisi les commandes par le fichier avec option LOAD
 
 	 ligneEnCours.tailleLigne=input.length();
 	 for(int i=0;i<ligneEnCours.tailleLigne;i++){
