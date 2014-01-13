@@ -1,4 +1,3 @@
-
 #include "Figure.h"
 #include <string>
 #include <vector>
@@ -8,60 +7,58 @@
 
 using namespace std;
 
+void ClassificationObjetEtAjouterDansLeMap(LigneDeCommande& lc, Figure& myFig) {
+	//ClassificationObjetsEtAjouterDansLeMap(lc, myFig);
+	if (!lc.error) {
+		if (lc.type == "PL" || lc.type == "C" || lc.type == "R") {
+			myFig.Ajouter(lc.nom, lc.points);
+		}
+		if (lc.type == "OA") {
+			myFig.Ajouter(lc.nom, lc.NomObjetUnique);
+		}
+		if (lc.type == "LIST" || lc.type == "UNDO" || lc.type == "REDO"
+				|| lc.type == "CLEAR" || lc.type == "EXIT") {
+			cout << "OK " << lc.type << endl;
+		}
+	} else if (lc.error) {
+		cout << "ERR" << endl;
+	}
+}
+
 int main() {
+        Figure myFig;
 
-	Figure myFig;
+        string commande;
+        std::string token;
+        do {
+        getline(std::cin, commande);
+        std::istringstream ss(commande);
 
-	string commande;
-	std::string token;
-	do {
-	getline(std::cin, commande);
-	std::istringstream ss(commande);
+        getline(ss, token, ' ');//Premier Mot
 
-	getline(ss, token, ' ');//Premier Mot
-
-	if(token=="LOAD"){
+        if(token=="LOAD"){
 		getline(ss, token, '\n');
 		if(token.substr(token.length()-4,4) == ".txt"){
 			LectureEcriture l(token.c_str());//"/home/nejat/Masaüstü/toto.txt"
-
-					while(!l.EstFini()){
-						LigneDeCommande lc;
-						lc=l.ProchainLigne();
-					if(!lc.error){
-						if(lc.type=="PL" || lc.type=="C" || lc.type=="R"){
-							//cout  << "OK "<< lc.nom;//std::cout << ' ' << *it;
-							//for (std::vector<long>::iterator it = lc.points.begin(); it != lc.points.end(); ++it)
-								myFig.Ajouter(lc.nom,lc.points);
-							//cout <<endl;
-						}
-						if(lc.type=="OA"){
-							//cout << "OK " << lc.nom;// std::cout << ' ' << *it;
-							//for (std::set<string>::iterator it=lc.NomObjetUnique.begin(); it!=lc.NomObjetUnique.end(); ++it)
-								myFig.Ajouter(lc.nom,lc.NomObjetUnique);
-							//cout << endl;
-						}
-						if(lc.type=="LIST" || lc.type=="UNDO" || lc.type=="REDO" || lc.type=="CLEAR" || lc.type=="EXIT"){
-							cout  << "OKi "<< lc.type << endl;
-						}
-					}
-					else if(lc.error)
-						cout <<"ERR" << endl;
-				}
-
-
-
-		}
-	}
-	else{
-		getline(ss, token, '\n');
-		cout << "OK " << token << endl;
-	}
+			while(!l.EstFini()){
+				LigneDeCommande lc;
+				lc=l.ProchainLigne();
+				ClassificationObjetEtAjouterDansLeMap(lc, myFig);
+				 }
+			}
+        }
+        else if(token=="C" || token=="PL" || token=="L" || token=="OA" || token=="R"){
+		int a=1;
+		cout << "else e girdi";
+		LectureEcriture l(commande,a);
+		LigneDeCommande lc;
+		lc=l.ProchainLigne();
+		ClassificationObjetEtAjouterDansLeMap(lc, myFig);
+        }
 }while(token!="EXIT");
 
-
-	cout << "VOILA ce qu'on a dans le MAP:" << endl;
-	myFig.Afficher();
+        cout << "VOILA ce qu'on a dans le MAP:" << endl;
+        myFig.Afficher();
 
 
 	/*
