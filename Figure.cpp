@@ -1,29 +1,49 @@
-/*
- * figure.cpp
- *
- *  Created on: 7 janv. 2014
- *      Author: narinik
- */
 
 #include "Figure.h"
 #include "Cercle.h"
 #include <list>
+#include <set>
+#include <vector>
 #include "string"
 #include "ElementGeo.h"
 
 using namespace std;
 
-Figure::~Figure() {
-		// TODO Auto-generated destructor stub
+
+void Figure::Ajouter(string nomObjet, vector<long> &points){
+	map<string,Parametres>::iterator it;
+	vector<long>::iterator itVec;
+	vector<string> vide;
+	if (stockage.find(nomObjet) == stockage.end()) { // C'EST PAS LA PEINE PEUT-ETRE!!!
+		//http://www.dreamincode.net/forums/topic/160765-trouble-with-mapvectorstring-int/
+		stockage[nomObjet].objetAgr = vide;
+		stockage[nomObjet].points = points;
+		stockage[nomObjet].elementObjAgr=vide;
 	}
 
-Figure::Figure() {
-	// TODO Auto-generated constructor stub
+
+}
+
+void Figure::Ajouter(string nomObjet, set<string> QuelobjetAgraget){
+	set<string>::iterator iter;
+	map<string,Parametres>::iterator it;
+	vector<string>::iterator itVec;
+
+	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
+		stockage[nomObjet].elementObjAgr.push_back(*iter);
+	}
+
+	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
+		if(stockage.find(*iter) != stockage.end()) // on ajoute aussi du type OA
+				stockage[*iter].objetAgr.push_back(nomObjet);
+	}
+
 
 }
 
 
-void Figure::ajouter(string typeElement,string nom, vector<long> vec){
+
+void Figure::Ajouter(string typeElement,string nom, vector<long> vec){
 
 	if(typeElement == "C"){
 
@@ -40,9 +60,38 @@ void Figure::ajouter(string typeElement,string nom, vector<long> vec){
 		}
 	}
 
-
-
-
-
-
 }
+
+void Figure::Afficher(){
+
+	map<string,Parametres>::iterator it;
+	vector<string>::iterator itVec2;
+	vector<long>::iterator itVec;
+	vector<string>::iterator iter;
+
+		for(it=stockage.begin();it!=stockage.end();it++){
+			cout << it->first << " ";
+			for(itVec=it->second.points.begin();itVec!=it->second.points.end();itVec++){
+				cout << *itVec << " ";
+			}
+
+			for(itVec2=it->second.elementObjAgr.begin();itVec2!=it->second.elementObjAgr.end();itVec2++){
+				cout << *itVec2 << " ";
+			}
+			cout << " ; ";
+
+			for(iter=it->second.objetAgr.begin();iter!=it->second.objetAgr.end();iter++){
+				cout << *iter<< " ";
+			}
+			cout << endl;
+		}
+}
+
+	Figure::Figure(){
+		// TODO Auto-generated constructor stub
+	}
+
+	Figure::~Figure() {
+			// TODO Auto-generated destructor stub
+	}
+
