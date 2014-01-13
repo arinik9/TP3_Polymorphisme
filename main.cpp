@@ -10,6 +10,8 @@ using namespace std;
 
 int main() {
 
+	Figure myFig;
+
 	string commande;
 	std::string token;
 	do {
@@ -26,20 +28,18 @@ int main() {
 					while(!l.EstFini()){
 						LigneDeCommande lc;
 						lc=l.ProchainLigne();
-
 					if(!lc.error){
 						if(lc.type=="PL" || lc.type=="C" || lc.type=="R"){
-							cout  << "OK "<< lc.nom;
-							for (std::vector<long>::iterator it = lc.points.begin(); it != lc.points.end();
-										++it)
-									std::cout << ' ' << *it;
-							cout << endl;
+							//cout  << "OK "<< lc.nom;//std::cout << ' ' << *it;
+							//for (std::vector<long>::iterator it = lc.points.begin(); it != lc.points.end(); ++it)
+								myFig.Ajouter(lc.nom,lc.points);
+							//cout <<endl;
 						}
 						if(lc.type=="OA"){
-							cout << "OK " << lc.nom;
-							for (std::set<string>::iterator it=lc.NomObjetUnique.begin(); it!=lc.NomObjetUnique.end(); ++it)
-							   std::cout << ' ' << *it;
-							cout << endl;
+							//cout << "OK " << lc.nom;// std::cout << ' ' << *it;
+							//for (std::set<string>::iterator it=lc.NomObjetUnique.begin(); it!=lc.NomObjetUnique.end(); ++it)
+								myFig.Ajouter(lc.nom,lc.NomObjetUnique);
+							//cout << endl;
 						}
 						if(lc.type=="LIST" || lc.type=="UNDO" || lc.type=="REDO" || lc.type=="CLEAR" || lc.type=="EXIT"){
 							cout  << "OKi "<< lc.type << endl;
@@ -58,6 +58,12 @@ int main() {
 		cout << "OK " << token << endl;
 	}
 }while(token!="EXIT");
+
+
+	cout << "VOILA ce qu'on a dans le MAP:" << endl;
+	myFig.Afficher();
+
+
 	/*
 
 	string commande;
