@@ -26,9 +26,12 @@ struct LigneDeCommande
 class LectureEcriture {
 private:
 	ifstream myFile;
+	string commandeManuel;
+	int enVeine;
 public:
 	LigneDeCommande ProchainLigne();
 	LectureEcriture(string nomFichier);
+	LectureEcriture(string command,int a);
 	bool EstFini();
 	virtual ~LectureEcriture();
 };
