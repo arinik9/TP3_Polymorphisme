@@ -15,4 +15,3 @@ ElementGeo::~ElementGeo() {
  bool ElementGeo::Deplacer(long x,long y){
 return 1;
  }
-TEST
