@@ -1,4 +1,3 @@
-
 #include "LectureEcriture.h"
 
 LigneDeCommande LectureEcriture::ProchainLigne()
@@ -79,6 +78,11 @@ return(myFile.eof());
 }
 
 LectureEcriture::LectureEcriture(string nomFichier):myFile(nomFichier.c_str()) {
+	// TODO Auto-generated constructor stub
+
+}
+
+LectureEcriture::LectureEcriture(string command, int a):commandeManuel(command), enVeine(a){
 	// TODO Auto-generated constructor stub
 
 }
