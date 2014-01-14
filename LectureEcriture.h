@@ -3,6 +3,8 @@
 #include <fstream>
 #include <algorithm>
 #include <set>
+#include <vector>
+#include<sstream>
 #ifndef LECTUREECRITURE_H_
 #define LECTUREECRITURE_H_
 
@@ -12,20 +14,24 @@ struct LigneDeCommande
 {
 	string nom;
 	string type;
-	//string rayon;
-	vector<int> points;
+	string rayon;
+	vector<long> points;
 	set<string> NomObjetUnique; // MAP peut-etre?????
-	string commande;
 	string fileName;
+	int tailleLigne;
+	int lengthFile;
 	bool error;
 };
 
 class LectureEcriture {
 private:
 	ifstream myFile;
+	string commandeManuel;
+	int enVeine;
 public:
-	LigneDeCommande ProchainLog();
+	LigneDeCommande ProchainLigne();
 	LectureEcriture(string nomFichier);
+	LectureEcriture(string command,int a);
 	bool EstFini();
 	virtual ~LectureEcriture();
 };

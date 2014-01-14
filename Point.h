@@ -12,6 +12,10 @@ class Point {
 public:
 	Point(long x1,long y1):x(x1),y(y1){}
 	virtual ~Point();
+	long GetX();
+	long GetY();
+	void SetX(long x);
+	void SetY(long y);
 protected:
 	long x;
 	long y;

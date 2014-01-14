@@ -8,10 +8,19 @@
 #ifndef POLYLIGNE_H_
 #define POLYLIGNE_H_
 
-class PolyLigne {
+#include <vector>
+#include <string>
+#include "Ligne.h"
+using namespace std;
+
+class PolyLigne : public Ligne{
 public:
-	PolyLigne();
+	PolyLigne(string nom1, vector<long> points) :Ligne(nom1, points[0], points[1], points[2], points[3]), autresPoints(points){};
+	//PolyLigne(string nom1, vector<long> points) :nom(nom1)
 	virtual ~PolyLigne();
+	void Afficher();
+protected:
+	vector<long> autresPoints;
 };
 
 #endif /* POLYLIGNE_H_ */

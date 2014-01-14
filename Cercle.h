@@ -15,6 +15,7 @@ class Cercle: public ElementGeo {
 public:
 	Cercle(string nom1,long x1,long y1,long rayon1):ElementGeo(nom1), centre(Point(x1,y1)),rayon(rayon1){}
 	virtual ~Cercle();
+	void Afficher();
 protected:
 	Point centre;
 
