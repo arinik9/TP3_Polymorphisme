@@ -12,6 +12,7 @@
 
 using namespace std;
 
+<<<<<<< HEAD
 
 void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 	map<string,ElementGeo*>::iterator it;
@@ -25,6 +26,48 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 		else if (type == "R"){
 			ElementGeo* rectangle = new Rectangle(nomObjet, points[0], points[1], points[2], points[3]);
 			elements[nomObjet] = rectangle;
+=======
+
+void Figure::Ajouter(string nomObjet, vector<long> &points){
+	map<string,Parametres>::iterator it;
+	vector<long>::iterator itVec;
+	vector<string> vide;
+	if (stockage.find(nomObjet) == stockage.end()) { // C'EST PAS LA PEINE PEUT-ETRE!!!
+		//http://www.dreamincode.net/forums/topic/160765-trouble-with-mapvectorstring-int/
+		stockage[nomObjet].objetAgr = vide;
+		stockage[nomObjet].points = points;
+		stockage[nomObjet].elementObjAgr=vide;
+	}
+
+
+}
+
+void Figure::Ajouter(string nomObjet, set<string> QuelobjetAgraget){
+	set<string>::iterator iter;
+	map<string,Parametres>::iterator it;
+	vector<string>::iterator itVec;
+
+	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
+		stockage[nomObjet].elementObjAgr.push_back(*iter);
+	}
+
+	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
+		if(stockage.find(*iter) != stockage.end()) // on ajoute aussi du type OA
+				stockage[*iter].objetAgr.push_back(nomObjet);
+	}
+
+
+}
+
+
+
+void Figure::Ajouter(string typeElement,string nom, vector<long> vec){
+
+	if(typeElement == "C"){
+
+		if(vec.size() != 3){
+			cout << "invalid parameters" << endl;
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e
 		}
 		else if (type == "L"){
 			ElementGeo* ligne = new Ligne(nomObjet, points[0], points[1], points[2], points[3]);
@@ -41,6 +84,7 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 		//stockage[nomObjet].elementObjAgr=vide; //Liste des OA dans lequel l'élément est contenu
 }
 
+<<<<<<< HEAD
 //void Figure::Ajouter(string nomObjet, set<string> QuelobjetAgraget){
 //	set<string>::iterator iter;
 //	map<string,Parametres>::iterator it;
@@ -57,9 +101,18 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 //
 //
 //}
+=======
+}
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e
 
+void Figure::Afficher(){
 
+	map<string,Parametres>::iterator it;
+	vector<string>::iterator itVec2;
+	vector<long>::iterator itVec;
+	vector<string>::iterator iter;
 
+<<<<<<< HEAD
 //void Figure::Ajouter(string typeElement,string nom, vector<long> vec){
 //
 //	if(typeElement == "C"){
@@ -86,6 +139,24 @@ void Figure::Afficher(){
 	for (it = elements.begin(); it != elements.end(); it++){
 		it->second->Afficher();
 	}
+=======
+		for(it=stockage.begin();it!=stockage.end();it++){
+			cout << it->first << " ";
+			for(itVec=it->second.points.begin();itVec!=it->second.points.end();itVec++){
+				cout << *itVec << " ";
+			}
+
+			for(itVec2=it->second.elementObjAgr.begin();itVec2!=it->second.elementObjAgr.end();itVec2++){
+				cout << *itVec2 << " ";
+			}
+			cout << " ; ";
+
+			for(iter=it->second.objetAgr.begin();iter!=it->second.objetAgr.end();iter++){
+				cout << *iter<< " ";
+			}
+			cout << endl;
+		}
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e
 }
 
 	Figure::Figure(){
@@ -95,3 +166,7 @@ void Figure::Afficher(){
 	Figure::~Figure() {
 			// TODO Auto-generated destructor stub
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e

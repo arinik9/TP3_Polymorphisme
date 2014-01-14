@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e
 #include "LectureEcriture.h"
 
 LigneDeCommande LectureEcriture::ProchainLigne()
@@ -33,7 +36,11 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 	getline(ss, u, ' ');
 	int PremierMotTaille=u.length();
 
+<<<<<<< HEAD
 	if((u=="C" && combienMot == 5)|| (u=="R" && combienMot == 6) || (u=="L" && combienMot == 6) || (u=="PL" && combienMot >= 4 && combienMot%2==0) || u=="MOVE" ){
+=======
+	if((u=="C" && combienMot == 5)|| (u=="R" && combienMot == 6) || (u=="L" && combienMot == 6) || (u=="PL") || u=="MOVE" ){
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e
 		ligneEnCours.type=u;
 		getline(ss, ligneEnCours.nom, ' ');
 		while(getline(ss, token, ' ')) {
@@ -42,9 +49,14 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 			string h;
 		    hh << value;
 		    hh >> h;
+<<<<<<< HEAD
 			if(token.length()==h.length()){ // a partir du 3eme element, verifier si c un entier ou pas
 				ligneEnCours.points.push_back (value);
 			}
+=======
+			if(token.length()==h.length()) // a partir du 3eme element, verifier si c un entier ou pas
+				ligneEnCours.points.push_back (value);
+>>>>>>> 2e7159e0647be8fae7bdc32e5bfdb9ca7c8d830e
 			else{
 				ligneEnCours.error=true;  break;//sortie du boucle for
 			}
