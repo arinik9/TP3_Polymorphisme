@@ -14,7 +14,11 @@ struct LigneDeCommande
 {
 	string nom;
 	string type;
+
 	string rayon;
+
+	//string rayon;
+
 	vector<long> points;
 	set<string> NomObjetUnique; // MAP peut-etre?????
 	string fileName;
