@@ -49,7 +49,6 @@ bool Figure::ExecuteUndo(){
 	bool res=true;
 	if (Undo.empty()){
 		res=false;
-	cout << "false" << endl;
 	}
 
 	if (res){

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void TraiterCommande(LigneDeCommande& lc, Figure& myFig) {
+void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load) {
 	Commande cmd;
 	cmd.nom=lc.nom;
 	cmd.type=lc.type;
@@ -23,7 +23,6 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig) {
 	if (!lc.error) {
 		if (lc.type == "PL" || lc.type == "C" || lc.type == "R" || lc.type == "L") {
 			myFig.Ajouter(lc.type, lc.nom, lc.points);
-		//	cout << "OK" << endl;
 			cmd.numeroOperation=1;
 		}
 		else if (lc.type == "OA") {
@@ -31,29 +30,26 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig) {
 
 		}
 		else if (lc.type == "UNDO") {
-			cout << "OK " << lc.type << endl;
 			cmd.numeroOperation=5;
 			myFig.ExecuteUndo();
 		}
 		else if (lc.type == "REDO") {
-			cout << "OK " << lc.type << endl;
 			cmd.numeroOperation=6;
 			myFig.ExecuteRedo();
 				}
 		else if (lc.type == "DELETE") {
-			cout << "OK " << lc.type << endl;
 			cmd.numeroOperation=2;
 				}
 		else if (lc.type == "CLEAR") {
-			cout << "OK " << lc.type << endl;
 			cmd.numeroOperation=4;
 				}
 		else if (lc.type == "MOVE") {
-			cout << "OK " << lc.type << endl;
 			myFig.Deplacer(lc.nom,lc.points[0],lc.points[1]);
 			cmd.numeroOperation=3;
 						}
-		if(cmd.numeroOperation<=4 && cmd.numeroOperation>=1)
+
+
+		if(cmd.numeroOperation<=4 && cmd.numeroOperation>=1 && !load)
 			myFig.AjouterCommandeDansStack(cmd);
 
 	} else if (lc.error) {
@@ -63,7 +59,7 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig) {
 
 int main() {
         Figure myFig;
-
+        bool load=false;
         string commande;
         std::string token;
         do {
@@ -73,13 +69,14 @@ int main() {
         getline(ss, token, ' ');//Premier Mot
 
         if(token=="LOAD"){
+        	load=true;
 		getline(ss, token, '\n');
 		if(token.substr(token.length()-4,4) == ".txt"){
 			LectureEcriture l(token.c_str());
 			while(!l.EstFini()){
 				LigneDeCommande lc;
 				lc=l.ProchainLigne();
-				TraiterCommande(lc, myFig);
+				TraiterCommande(lc, myFig,load);
 				 }
 			}
 		cout << "OK" << endl;
@@ -89,7 +86,7 @@ int main() {
 		LectureEcriture l(commande,a);
 		LigneDeCommande lc;
 		lc=l.ProchainLigne();
-		TraiterCommande(lc, myFig);
+		TraiterCommande(lc, myFig, load);
 		cout << "OK" << endl;
         }
 		else if (token == "LIST"){
