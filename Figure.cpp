@@ -79,7 +79,7 @@ bool Figure::ExecuteUndo(){
 bool Figure::ExecuteRedo(){
 	Commande cmd;
 	bool res=true;
-	if (Undo.empty())
+	if (Redo.empty())
 		res=false;
 
 	if(res){
@@ -138,6 +138,18 @@ void Figure::Deplacer(string nom,long x,long y){
 
 	 it=elements.find(nom);
 	 it->second->Deplacer(x,y);
+}
+
+void Figure::Sauvegarder(){
+	map<string,ElementGeo*>::iterator it;
+	ofstream myfile("/home/nejat/Masaüstü/babayaro.txt");
+	if (myfile.is_open()){
+		for (it = elements.begin(); it != elements.end(); it++){
+			it->second->Sauvegarder(myfile);
+		}
+
+		myfile.close();
+	}
 }
 
 	Figure::Figure(){

@@ -22,3 +22,10 @@ void Cercle::Deplacer(long x,long y){
 	centre.SetX(centre.GetX()+x);
 	centre.SetY(centre.GetY()+y);
 }
+
+void Cercle::Sauvegarder(ofstream& f){
+	streambuf *file_buffer=f.rdbuf();
+	streambuf *old_cout_buffer=cout.rdbuf(file_buffer);
+	Afficher();
+	cout.rdbuf(old_cout_buffer);
+ }

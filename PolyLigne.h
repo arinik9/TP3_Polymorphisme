@@ -20,6 +20,7 @@ public:
 	virtual ~PolyLigne();
 	void Afficher();
 	void Deplacer(long x,long y);
+	void Sauvegarder(ofstream& f);
 protected:
 	vector<long> autresPoints;
 };

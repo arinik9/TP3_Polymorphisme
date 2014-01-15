@@ -36,6 +36,7 @@ public:
 	bool ExecuteRedo();
 	void Afficher();
 	void Deplacer(string nom,long x,long y);
+	void Sauvegarder();
 	virtual ~Figure();
 };
 

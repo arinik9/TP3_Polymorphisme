@@ -80,6 +80,7 @@ int main() {
 				 }
 			}
 		cout << "OK" << endl;
+		load=false;
         }
         else if(token=="C" || token=="PL" || token=="L" || token=="OA" || token=="R" || token=="UNDO" || token=="REDO" || token=="MOVE" || token=="CLEAR" ){
 		int a=1;
@@ -93,6 +94,11 @@ int main() {
 			cout << "OK" << endl;
 			myFig.Afficher();
 		}
+		else if (token == "SAVE"){
+					cout << "OK eee" << endl;
+					getline(ss, token, '\n');
+					myFig.Sauvegarder();
+				}
 }while(token!="EXIT");
 
 

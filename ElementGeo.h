@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 class ElementGeo {
@@ -18,6 +19,7 @@ public:
 	ElementGeo(string nom1):nom(nom1){}
 	virtual void Deplacer(long x,long y);
 	virtual void Afficher();
+	virtual void Sauvegarder(ofstream& f);
 	virtual ~ElementGeo();
 protected:
 	string nom;

@@ -16,4 +16,8 @@ ElementGeo::~ElementGeo() {
 
  }
 
+ void ElementGeo::Sauvegarder(ofstream& f){
+
+  }
+
  void ElementGeo::Afficher(){}

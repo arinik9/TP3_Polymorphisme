@@ -20,6 +20,13 @@ void Ligne::Deplacer(long x,long y){
 	point2.SetY(point2.GetY()+y);
 }
 
+void Ligne::Sauvegarder(ofstream& f){
+	streambuf *file_buffer=f.rdbuf();
+	streambuf *old_cout_buffer=cout.rdbuf(file_buffer);
+	Afficher();
+	cout.rdbuf(old_cout_buffer);
+ }
+
 Ligne::~Ligne() {
 	// TODO Auto-generated destructor stub
 }

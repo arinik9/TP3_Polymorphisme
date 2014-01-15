@@ -17,6 +17,7 @@ public:
 	virtual ~Cercle();
 	void Afficher();
 	void Deplacer(long x,long y);
+	void Sauvegarder(ofstream& f);
 protected:
 	Point centre;
 	long rayon;

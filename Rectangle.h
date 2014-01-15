@@ -21,6 +21,7 @@ public:
 	virtual ~Rectangle();
 	void Afficher();
 	void Deplacer(long x,long y);
+	void Sauvegarder(ofstream& f);
 
 protected :
 	Point point1;
