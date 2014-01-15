@@ -17,3 +17,8 @@ Cercle::~Cercle() {
 void Cercle::Afficher(){
 	cout << "C " << nom << " " << centre.GetX() << " " << centre.GetY() << " " << rayon << endl;
 }
+
+void Cercle::Deplacer(long x,long y){
+	centre.SetX(centre.GetX()+x);
+	centre.SetY(centre.GetY()+y);
+}

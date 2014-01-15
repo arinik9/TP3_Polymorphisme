@@ -19,6 +19,7 @@ public:
 	//PolyLigne(string nom1, vector<long> points) :nom(nom1)
 	virtual ~PolyLigne();
 	void Afficher();
+	void Deplacer(long x,long y);
 protected:
 	vector<long> autresPoints;
 };

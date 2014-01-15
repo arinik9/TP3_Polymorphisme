@@ -40,32 +40,38 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 }
 
 void Figure::AjouterCommandeDansStack(Commande& cmd){
-	if(cmd.numeroOperation != 5 || cmd.numeroOperation !=6) // pas de Commande Undo et Redo
+//	if(cmd.numeroOperation != 5 || cmd.numeroOperation !=6) // pas de Commande Undo et Redo
 		Undo.push(cmd);
 }
 
 bool Figure::ExecuteUndo(){
 	Commande cmd;
 	bool res=true;
-	if (Undo.empty())
+	if (Undo.empty()){
 		res=false;
+	cout << "false" << endl;
+	}
 
 	if (res){
 		cmd=Undo.top();
 		Redo.push(cmd); //Undo.top()  -->>  supprimer le dernier element qui est inseré
 		Undo.pop();
 
-		if(cmd.numeroOperation==1){
-			//ajouter
+		if(cmd.numeroOperation==1){//1=ajouter
+			//donc supprimer
+			map<string,ElementGeo*>::iterator it;
+			it=elements.find(cmd.nom);
+			elements.erase(it);
 		}
-		if(cmd.numeroOperation==2){
-			//supprimer
+		if(cmd.numeroOperation==2){//2=supprimer
+			//donc ajouter
+			Ajouter(cmd.type,cmd.nom,cmd.points);
 		}
-		if(cmd.numeroOperation==3){
-			//deplacer
+		if(cmd.numeroOperation==3){//3=deplacer
+			Deplacer(cmd.nom,(-1)*cmd.points[0],(-1)*cmd.points[1]);
 		}
-		if(cmd.numeroOperation==4){
-			//clear
+		if(cmd.numeroOperation==4){//4=clear
+
 		}
 	}
 	return res;
@@ -82,17 +88,19 @@ bool Figure::ExecuteRedo(){
 		Undo.push(cmd); //Undo.top()  -->>  supprimer le dernier element qui est inseré
 		Redo.pop();
 
-		if(cmd.numeroOperation==1){
-			//ajouter
+		if(cmd.numeroOperation==1){//ajouter
+			Ajouter(cmd.type,cmd.nom,cmd.points);
 		}
-		if(cmd.numeroOperation==2){
-			//supprimer
+		if(cmd.numeroOperation==2){//supprimer
+			map<string,ElementGeo*>::iterator it;
+			it=elements.find(cmd.nom);
+			elements.erase(it);
 		}
-		if(cmd.numeroOperation==3){
-			//deplacer
+		if(cmd.numeroOperation==3){//deplacer
+			Deplacer(cmd.nom,cmd.points[0],cmd.points[1]);
 		}
-		if(cmd.numeroOperation==4){
-			//clear
+		if(cmd.numeroOperation==4){//clear
+
 		}
 	}
 	return res;
@@ -123,6 +131,14 @@ void Figure::Afficher(){
 	for (it = elements.begin(); it != elements.end(); it++){
 		it->second->Afficher();
 	}
+}
+
+
+void Figure::Deplacer(string nom,long x,long y){
+	map<string,ElementGeo*>::iterator it;
+
+	 it=elements.find(nom);
+	 it->second->Deplacer(x,y);
 }
 
 	Figure::Figure(){

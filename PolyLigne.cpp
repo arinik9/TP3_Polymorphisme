@@ -30,3 +30,21 @@ void PolyLigne::Afficher(){
 	}
 	cout << endl;
 }
+
+
+void PolyLigne::Deplacer(long x,long y){
+	point1.SetX(point1.GetX()+x);
+	point1.SetY(point1.GetY()+y);
+	point2.SetX(point2.GetX()+x);
+	point2.SetY(point2.GetY()+y);
+	if (autresPoints.size() != 0) {
+		vector<long>::iterator it;
+		for (it = autresPoints.begin()+4; it != autresPoints.end(); it++){
+			if(*it%2==0)
+				*it=*it+x;
+			else if(*it%2==1)
+				*it=*it+y;
+		}
+	}
+}
+

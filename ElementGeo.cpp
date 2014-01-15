@@ -12,8 +12,8 @@ ElementGeo::~ElementGeo() {
 	// TODO Auto-generated destructor stub
 }
 
- bool ElementGeo::Deplacer(long x,long y){
-return 1;
+ void ElementGeo::Deplacer(long x,long y){
+
  }
 
  void ElementGeo::Afficher(){}

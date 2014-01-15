@@ -16,7 +16,7 @@ class ElementGeo {
 public:
 	ElementGeo();
 	ElementGeo(string nom1):nom(nom1){}
-	virtual bool Deplacer(long x,long y);
+	virtual void Deplacer(long x,long y);
 	virtual void Afficher();
 	virtual ~ElementGeo();
 protected:

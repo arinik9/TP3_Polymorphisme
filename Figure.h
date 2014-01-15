@@ -35,6 +35,7 @@ public:
 	bool ExecuteUndo();
 	bool ExecuteRedo();
 	void Afficher();
+	void Deplacer(string nom,long x,long y);
 	virtual ~Figure();
 };
 
