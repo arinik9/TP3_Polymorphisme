@@ -12,11 +12,13 @@
 
 using namespace std;
 
+//http://kapo-cpp.blogspot.fr/2007/10/multilevel-undo-with-command-pattern.html
+
 
 void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 	map<string,ElementGeo*>::iterator it;
 	vector<long>::iterator itVec;
-	//vector<string> vide;
+
 	if (elements.find(nomObjet) == elements.end()) { // C'EST PAS LA PEINE PEUT-ETRE!!!
 		if (type == "C"){
 			ElementGeo* cercle = new Cercle(nomObjet, points[0], points[1], points[2]);
@@ -35,12 +37,66 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 			elements[nomObjet] = polyligne;
 		}
 	}
-		//http://www.dreamincode.net/forums/topic/160765-trouble-with-mapvectorstring-int/
-		//elements[nomObjet].objetAgr = vide; //Liste des éléments contenus par l'OA
-		//stockage[nomObjet].points = points; //Liste des points qui constituent l'élément
-		//stockage[nomObjet].elementObjAgr=vide; //Liste des OA dans lequel l'élément est contenu
 }
 
+void Figure::AjouterCommandeDansStack(Commande& cmd){
+	if(cmd.numeroOperation != 5 || cmd.numeroOperation !=6) // pas de Commande Undo et Redo
+		Undo.push(cmd);
+}
+
+bool Figure::ExecuteUndo(){
+	Commande cmd;
+	bool res=true;
+	if (Undo.empty())
+		res=false;
+
+	if (res){
+		cmd=Undo.top();
+		Redo.push(cmd); //Undo.top()  -->>  supprimer le dernier element qui est inseré
+		Undo.pop();
+
+		if(cmd.numeroOperation==1){
+			//ajouter
+		}
+		if(cmd.numeroOperation==2){
+			//supprimer
+		}
+		if(cmd.numeroOperation==3){
+			//deplacer
+		}
+		if(cmd.numeroOperation==4){
+			//clear
+		}
+	}
+	return res;
+}
+
+bool Figure::ExecuteRedo(){
+	Commande cmd;
+	bool res=true;
+	if (Undo.empty())
+		res=false;
+
+	if(res){
+		cmd=Redo.top();
+		Undo.push(cmd); //Undo.top()  -->>  supprimer le dernier element qui est inseré
+		Redo.pop();
+
+		if(cmd.numeroOperation==1){
+			//ajouter
+		}
+		if(cmd.numeroOperation==2){
+			//supprimer
+		}
+		if(cmd.numeroOperation==3){
+			//deplacer
+		}
+		if(cmd.numeroOperation==4){
+			//clear
+		}
+	}
+	return res;
+}
 //void Figure::Ajouter(string nomObjet, set<string> QuelobjetAgraget){
 //	set<string>::iterator iter;
 //	map<string,Parametres>::iterator it;
@@ -59,25 +115,6 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 //}
 
 
-
-//void Figure::Ajouter(string typeElement,string nom, vector<long> vec){
-//
-//	if(typeElement == "C"){
-//
-//		if(vec.size() != 3){
-//			cout << "invalid parameters" << endl;
-//		}
-//		else{
-//		long x = vec[0];
-//		long y = vec[1];
-//		long rayon = vec[2];
-//		ElementGeo* temp = new Cercle(nom,x,y,rayon);
-//		elements.push_back(temp);
-//		cout << "New object :" << nom << endl;
-//		}
-//	}
-//
-//}
 
 void Figure::Afficher(){
 

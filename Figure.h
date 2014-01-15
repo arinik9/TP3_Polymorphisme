@@ -1,13 +1,7 @@
-/*
- * figure.h
- *
- *  Created on: 7 janv. 2014
- *      Author: narinik
- */
+
 
 #ifndef FIGURE_H_
 #define FIGURE_H_
-
 
 #include <iostream>
 #include <list>
@@ -16,28 +10,30 @@
 #include "ElementGeo.h"
 #include <map>
 #include <set>
+#include <stack>
 
-//using namespace std;
-
-//struct Parametres
-//{
-//	vector<string> objetAgr,elementObjAgr;
-//	vector<long> points;
-//
-//};
+struct Commande
+{
+	string nom;
+	string type;
+	vector<long> points;
+	//vector<string> NomObjetUnique;
+	int numeroOperation;
+};
 
 class Figure {
 private:
 	map<string, ElementGeo*> elements;
-		//typedef map<std::vector<long>, std::vector<string> > Parametres;
-		//typedef map<string, Parametres> ObjetGeo;
-		//ObjetGeo stockage;
+	std::stack<Commande> Undo;
+	std::stack<Commande> Redo;
 public:
 	//std::list<ElementGeo*> elements;
 	Figure();
 	void Ajouter(string type, string nomObjet, vector<long> points); // on va utiliser REFERENCE????
 	void Ajouter(string nomObjet, set<string> QuelobjetAgraget); // on va utiliser REFERENCE????
-	//void Ajouter(std::string typeElement,std::string nom, vector<long> vec);
+	void AjouterCommandeDansStack(Commande& cmd);
+	bool ExecuteUndo();
+	bool ExecuteRedo();
 	void Afficher();
 	virtual ~Figure();
 };
