@@ -58,8 +58,8 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 		while(getline(ss, token, ' ')) {
 			compteurPourSet++;
 
-		//	ligneEnCours.NomObjetUnique.insert(token);
-			if(compteurPourSet != ligneEnCours.NomObjetUnique.size()){ // au lieu d'utiliser la methode find(), on compare juste les tailles
+			ligneEnCours.listeObjets.insert(token);
+			if(compteurPourSet != ligneEnCours.listeObjets.size()){ // au lieu d'utiliser la methode find(), on compare juste les tailles
 				ligneEnCours.error=true;   break;
 			}
 		}

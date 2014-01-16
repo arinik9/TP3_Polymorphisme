@@ -16,7 +16,7 @@ struct LigneDeCommande
 	string type;
 	string rayon;
 	vector<long> points;
-	set<string> NomObjetUnique; // MAP peut-etre?????
+	set<string> listeObjets;// MAP peut-etre?????
 	string fileName;
 	int tailleLigne;
 	int lengthFile;

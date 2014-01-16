@@ -17,7 +17,7 @@ struct Commande
 	string nom;
 	string type;
 	vector<long> points;
-	//vector<string> NomObjetUnique;
+	set<string> listeObjetString;
 	int numeroOperation;
 };
 
@@ -36,6 +36,7 @@ public:
 	bool ExecuteRedo();
 	void Afficher();
 	void Deplacer(string nom,long x,long y);
+	void Supprimer(set<string> listeObjets);
 	void Sauvegarder();
 	virtual ~Figure();
 };

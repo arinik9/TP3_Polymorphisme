@@ -64,7 +64,11 @@ bool Figure::ExecuteUndo(){
 		}
 		if(cmd.numeroOperation==2){//2=supprimer
 			//donc ajouter
-			Ajouter(cmd.type,cmd.nom,cmd.points);
+			if(cmd.listeObjetString.empty())
+				Ajouter(cmd.type,cmd.nom,cmd.points);
+			else{
+				//Ajouter string
+			}
 		}
 		if(cmd.numeroOperation==3){//3=deplacer
 			Deplacer(cmd.nom,(-1)*cmd.points[0],(-1)*cmd.points[1]);
@@ -88,7 +92,11 @@ bool Figure::ExecuteRedo(){
 		Redo.pop();
 
 		if(cmd.numeroOperation==1){//ajouter
-			Ajouter(cmd.type,cmd.nom,cmd.points);
+			if(cmd.listeObjetString.empty())
+				Ajouter(cmd.type,cmd.nom,cmd.points);
+			else{
+				//Ajouter string
+			}
 		}
 		if(cmd.numeroOperation==2){//supprimer
 			map<string,ElementGeo*>::iterator it;
@@ -104,22 +112,23 @@ bool Figure::ExecuteRedo(){
 	}
 	return res;
 }
-//void Figure::Ajouter(string nomObjet, set<string> QuelobjetAgraget){
-//	set<string>::iterator iter;
-//	map<string,Parametres>::iterator it;
-//	vector<string>::iterator itVec;
-//
-//	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
-//		stockage[nomObjet].elementObjAgr.push_back(*iter);
-//	}
-//
-//	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
-//		if(stockage.find(*iter) != stockage.end()) // on ajoute aussi du type OA
-//				stockage[*iter].objetAgr.push_back(nomObjet);
-//	}
-//
-//
-//}
+/*
+void Figure::Ajouter(string nomObjet, set<string> QuelobjetAgraget){
+	set<string>::iterator iter;
+	map<string,Parametres>::iterator it;
+	vector<string>::iterator itVec;
+
+	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
+		stockage[nomObjet].elementObjAgr.push_back(*iter);
+	}
+
+	for(iter=QuelobjetAgraget.begin();iter!=QuelobjetAgraget.end();iter++){
+		if(stockage.find(*iter) != stockage.end()) // on ajoute aussi du type OA
+				stockage[*iter].objetAgr.push_back(nomObjet);
+	}
+
+
+}*/
 
 
 
@@ -138,6 +147,30 @@ void Figure::Deplacer(string nom,long x,long y){
 
 	 it=elements.find(nom);
 	 it->second->Deplacer(x,y);
+}
+
+void Figure::Supprimer(set<string> listeObjets){
+	bool erreur = false;
+	set<string>::iterator itSet;
+	map<string, ElementGeo*>::iterator itMap;
+	for (itSet = listeObjets.begin(); itSet != listeObjets.end(); itSet++){
+		itMap = elements.find(*itSet);
+		if (itMap == elements.end()){
+			erreur = true;
+			break;
+		}
+	}
+	if (erreur == false){
+		for (itSet = listeObjets.begin(); itSet != listeObjets.end(); itSet++){
+			itMap = elements.find(*itSet);
+			elements.erase(itMap);
+		}
+		//cout << "OK" << endl;
+	}
+	else{
+		cout << "ERR" << endl;
+		cout << "# Au moins un nom est invalide" << endl;
+	}
 }
 
 void Figure::Sauvegarder(){
