@@ -33,7 +33,7 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 	getline(ss, u, ' ');
 	int PremierMotTaille=u.length();
 
-	if((u=="C" && combienMot == 5)|| (u=="R" && combienMot == 6) || (u=="L" && combienMot == 6) || (u=="PL" && combienMot >= 4 && combienMot%2==0) || u=="MOVE" ){
+	if((u=="C" && combienMot == 5)|| (u=="R" && combienMot == 6) || (u=="L" && combienMot == 6) || (u=="PL" && combienMot >= 4 && combienMot%2==0) || (u=="MOVE" && combienMot==4) ){
 		ligneEnCours.type=u;
 		getline(ss, ligneEnCours.nom, ' ');
 		while(getline(ss, token, ' ')) {
@@ -50,7 +50,7 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 			}
 		}
 	}
-	else if(u=="OA" || u=="DELETE"){
+	else if((u=="OA" && combienMot>1) || u=="DELETE"){
 		ligneEnCours.type=u;
 		if(u!="DELETE")
 			getline(ss, ligneEnCours.nom, ' ');

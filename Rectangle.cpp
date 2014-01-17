@@ -10,7 +10,7 @@ void Rectangle::Afficher(){
 	cout << "R " << nom << " " << point1.GetX() << " " << point1.GetY() << " " << point2.GetX() << " " << point2.GetY() << " " << endl;
 }
 
-void Rectangle::Deplacer(long x,long y){
+void Rectangle::Deplacer(long x,long y,vector<string> objetsDeplaces){
 	point1.SetX(point1.GetX()+x);
 	point1.SetY(point1.GetY()+y);
 	point2.SetX(point2.GetX()+x);

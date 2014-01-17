@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load) {
+void TraiterCommande(LigneDeCommande& lc, Figure& myFig,bool load,bool opChange) {
 	Commande cmd;
 	cmd.nom=lc.nom;
 	cmd.type=lc.type;
@@ -23,7 +23,7 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load) {
 
 /*if (type == "LIST"){
 		cout << "LIIIIIST" << endl;
-		
+
 	map<string, ElementGeo*>::iterator it;
 	cout << "Nom : " << it->first << " Rayon : " << ((Cercle*)(it->second))->getRayon() << endl;
 }*/
@@ -39,11 +39,11 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load) {
 		}
 		else if (lc.type == "UNDO") {
 			cmd.numeroOperation=5;
-			myFig.ExecuteUndo();
+			myFig.ExecuteUndo(opChange);
 		}
 		else if (lc.type == "REDO") {
 			cmd.numeroOperation=6;
-			myFig.ExecuteRedo();
+			myFig.ExecuteRedo(opChange);
 				}
 		else if (lc.type == "DELETE"){
 			myFig.Supprimer(lc.listeObjets);
@@ -53,7 +53,8 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load) {
 			cmd.numeroOperation=4;
 				}
 		else if (lc.type == "MOVE") {
-			myFig.Deplacer(lc.nom,lc.points[0],lc.points[1]);
+			vector<string> objetsDeplaces;
+			myFig.Deplacer(lc.nom, lc.points[0], lc.points[1], objetsDeplaces);
 			cmd.numeroOperation=3;
 						}
 
@@ -69,6 +70,7 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load) {
 int main() {
         Figure myFig;
         bool load=false;
+        bool operationQuiChangeQqchSurEcran=false;
         string commande;
         std::string token;
         do {
@@ -85,7 +87,7 @@ int main() {
 			while(!l.EstFini()){
 				LigneDeCommande lc;
 				lc=l.ProchainLigne();
-				TraiterCommande(lc, myFig,load);
+				TraiterCommande(lc, myFig,load,operationQuiChangeQqchSurEcran);
 				 }
 			}
 		cout << "OK" << endl;
@@ -96,18 +98,28 @@ int main() {
 		LectureEcriture l(commande,a);
 		LigneDeCommande lc;
 		lc=l.ProchainLigne();
-		TraiterCommande(lc, myFig, load);
+		TraiterCommande(lc, myFig,load,operationQuiChangeQqchSurEcran);
 		cout << "OK" << endl;
+
+		if(token!="UNDO" && token!="REDO" && token!="UNDO")
+			operationQuiChangeQqchSurEcran=true;
+		else
+			operationQuiChangeQqchSurEcran=false;
+
         }
 		else if (token == "LIST"){
 			cout << "OK" << endl;
 			myFig.Afficher();
 		}
 		else if (token == "SAVE"){
-					cout << "OK eee" << endl;
-					getline(ss, token, '\n');
-					myFig.Sauvegarder();
-				}
+			getline(ss, token, '\n');
+			if(token.substr(token.length()-4,4) == ".txt"){
+				myFig.Sauvegarder(token);
+				cout << "OK" << endl;
+			}
+			else
+				cout <<"ERR" << endl << "#ecrivez .txt pour le fichier!" << endl;
+			}
 }while(token!="EXIT");
 
 

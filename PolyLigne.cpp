@@ -32,20 +32,27 @@ void PolyLigne::Afficher(){
 }
 
 
-void PolyLigne::Deplacer(long x,long y){
+void PolyLigne::Deplacer(long x,long y, vector<string> objetsDeplaces){
 	point1.SetX(point1.GetX()+x);
 	point1.SetY(point1.GetY()+y);
 	point2.SetX(point2.GetX()+x);
 	point2.SetY(point2.GetY()+y);
 	if (autresPoints.size() != 0) {
-		vector<long>::iterator it;
-		for (it = autresPoints.begin()+4; it != autresPoints.end(); it++){
-			if(*it%2==0)
-				*it=*it+x;
-			else if(*it%2==1)
-				*it=*it+y;
+			vector<long>::iterator it;
+			bool pair = false;
+			for (it = autresPoints.begin() + 4; it != autresPoints.end(); it++){
+				if (!pair){
+					*it = *it + x;
+					pair = true;
+					cout << "IMPAIR" << endl;
+				}
+				else if (pair){
+				*it = *it + y;
+				pair = false;
+				cout << "PAIR" << endl;
+			}
+			}
 		}
-	}
 }
 
 

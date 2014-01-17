@@ -18,7 +18,7 @@ void Cercle::Afficher(){
 	cout << "C " << nom << " " << centre.GetX() << " " << centre.GetY() << " " << rayon << endl;
 }
 
-void Cercle::Deplacer(long x,long y){
+void Cercle::Deplacer(long x,long y,vector<string> objetsDeplaces){
 	centre.SetX(centre.GetX()+x);
 	centre.SetY(centre.GetY()+y);
 }

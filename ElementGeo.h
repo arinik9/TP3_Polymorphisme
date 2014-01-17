@@ -16,14 +16,15 @@ using namespace std;
 class ElementGeo {
 public:
 	ElementGeo();
-	ElementGeo(string nom1):nom(nom1){}
-	virtual void Deplacer(long x,long y);
+	ElementGeo(string nom1,string type1):nom(nom1),type(type1){}
+	virtual void Deplacer(long x,long y, vector<string> objetsDeplaces);
 	virtual void Afficher();
+	string GetType(); //virtual
 	virtual void Sauvegarder(ofstream& f);
 	virtual ~ElementGeo();
 protected:
 	string nom;
-	vector<string> listeOA; //liste des OA contenant cet élément
+	string type;
 };
 
 #endif /* ELEMENTGEO_H_ */

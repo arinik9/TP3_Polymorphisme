@@ -10,10 +10,10 @@ using namespace std;
 class ObjetAgrege :public ElementGeo
 {
 private :
-	map<string, ElementGeo*> elements;
-	string nom;
+	map<string, ElementGeo*> contenu;
 public:
-	ObjetAgrege(string nom1):nom(nom1){}
+	ObjetAgrege(string nom):ElementGeo(nom,"OA"){};
+	void Deplacer(long x, long y, vector<string> objetsDeplaces);
 	~ObjetAgrege();
 	//bool AjouterDansOA(ElementGeo* ajout);
 };

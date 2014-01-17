@@ -32,12 +32,12 @@ public:
 	void Ajouter(string type, string nomObjet, vector<long> points); // on va utiliser REFERENCE????
 	void Ajouter(string nomObjet, set<string> QuelobjetAgraget); // on va utiliser REFERENCE????
 	void AjouterCommandeDansStack(Commande& cmd);
-	bool ExecuteUndo();
-	bool ExecuteRedo();
+	bool ExecuteUndo(bool op);
+	bool ExecuteRedo(bool op);
 	void Afficher();
-	void Deplacer(string nom,long x,long y);
+	void Deplacer(string nom,long x,long y,vector<string> objetsDeplaces);
 	void Supprimer(set<string> listeObjets);
-	void Sauvegarder();
+	void Sauvegarder(string nomFichier);
 	virtual ~Figure();
 };
 

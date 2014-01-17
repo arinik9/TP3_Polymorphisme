@@ -44,7 +44,7 @@ void Figure::AjouterCommandeDansStack(Commande& cmd){
 		Undo.push(cmd);
 }
 
-bool Figure::ExecuteUndo(){
+bool Figure::ExecuteUndo(bool op){
 	Commande cmd;
 	bool res=true;
 	if (Undo.empty()){
@@ -52,6 +52,11 @@ bool Figure::ExecuteUndo(){
 	}
 
 	if (res){
+		if(op==true){
+			while(!Redo.empty()) // on dépile donc Redo va etre vide
+			Redo.pop();
+		}
+
 		cmd=Undo.top();
 		Redo.push(cmd); //Undo.top()  -->>  supprimer le dernier element qui est inseré
 		Undo.pop();
@@ -71,7 +76,8 @@ bool Figure::ExecuteUndo(){
 			}
 		}
 		if(cmd.numeroOperation==3){//3=deplacer
-			Deplacer(cmd.nom,(-1)*cmd.points[0],(-1)*cmd.points[1]);
+			vector<string> vect;
+			Deplacer(cmd.nom,(-1)*cmd.points[0],(-1)*cmd.points[1],vect);
 		}
 		if(cmd.numeroOperation==4){//4=clear
 
@@ -80,7 +86,7 @@ bool Figure::ExecuteUndo(){
 	return res;
 }
 
-bool Figure::ExecuteRedo(){
+bool Figure::ExecuteRedo(bool op){
 	Commande cmd;
 	bool res=true;
 	if (Redo.empty())
@@ -88,8 +94,15 @@ bool Figure::ExecuteRedo(){
 
 	if(res){
 		cmd=Redo.top();
-		Undo.push(cmd); //Undo.top()  -->>  supprimer le dernier element qui est inseré
-		Redo.pop();
+		if(op){
+			while(!Redo.empty()) // on dépile donc Redo va etre vide
+				Redo.pop();
+		}
+
+		if(!op){
+			Undo.push(cmd);
+			Redo.pop();
+
 
 		if(cmd.numeroOperation==1){//ajouter
 			if(cmd.listeObjetString.empty())
@@ -104,7 +117,9 @@ bool Figure::ExecuteRedo(){
 			elements.erase(it);
 		}
 		if(cmd.numeroOperation==3){//deplacer
-			Deplacer(cmd.nom,cmd.points[0],cmd.points[1]);
+			vector<string> vect;
+			Deplacer(cmd.nom,cmd.points[0],cmd.points[1],vect);
+		}
 		}
 		if(cmd.numeroOperation==4){//clear
 
@@ -142,11 +157,17 @@ void Figure::Afficher(){
 }
 
 
-void Figure::Deplacer(string nom,long x,long y){
-	map<string,ElementGeo*>::iterator it;
-
-	 it=elements.find(nom);
-	 it->second->Deplacer(x,y);
+void Figure::Deplacer(string nom,long x,long y,vector<string> objetsDeplaces){
+	map<string, ElementGeo*>::iterator it;
+		it = elements.find(nom);
+		if (it != elements.end()){
+			it->second->Deplacer(x, y, objetsDeplaces);
+			cout << "OK" << endl;
+		}
+		else{
+			cout << "ERR" << endl;
+			cout << "# L'objet n'existe pas" << endl;
+		}
 }
 
 void Figure::Supprimer(set<string> listeObjets){
@@ -173,16 +194,28 @@ void Figure::Supprimer(set<string> listeObjets){
 	}
 }
 
-void Figure::Sauvegarder(){
+void Figure::Sauvegarder(string nomFichier){
 	map<string,ElementGeo*>::iterator it;
-	ofstream myfile("/home/nejat/Masaüstü/babayaro.txt");
-	if (myfile.is_open()){
-		for (it = elements.begin(); it != elements.end(); it++){
-			it->second->Sauvegarder(myfile);
-		}
+		map<string,ElementGeo*> temp;
+		string chemin="/home/nejat/Masaüstü/"; // optionnel
+		chemin+=nomFichier;
+		ofstream myfile(chemin.c_str());
+		if (myfile.is_open()){
+			for (it = elements.begin(); it != elements.end(); it++){
+				string type=it->second->GetType();
+				if(type!="OA")
+					it->second->Sauvegarder(myfile);
+				else{
+					temp.insert(*it);
+				}
+			}
 
-		myfile.close();
-	}
+			for (it = temp.begin(); it != temp.end(); it++){
+				it->second->Sauvegarder(myfile);
+			}
+
+			myfile.close();
+		}
 }
 
 	Figure::Figure(){
