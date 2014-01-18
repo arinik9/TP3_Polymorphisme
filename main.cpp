@@ -20,14 +20,6 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig,bool load,bool opChange)
 	// clear=4;
 	// undo=5;
 	// redo=6;
-
-/*if (type == "LIST"){
-		cout << "LIIIIIST" << endl;
-
-	map<string, ElementGeo*>::iterator it;
-	cout << "Nom : " << it->first << " Rayon : " << ((Cercle*)(it->second))->getRayon() << endl;
-}*/
-
 	if (!lc.error) {
 		if (lc.type == "PL" || lc.type == "C" || lc.type == "R" || lc.type == "L") {
 			myFig.Ajouter(lc.type, lc.nom, lc.points);
@@ -50,6 +42,9 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig,bool load,bool opChange)
 			cmd.numeroOperation=2;
 				}
 		else if (lc.type == "CLEAR") {
+			map<string, ElementGeo*> objetCopiees;
+			cmd.objetsCopiees=myFig.clear();
+			cout << "size"<<cmd.objetsCopiees.size()<< endl;
 			cmd.numeroOperation=4;
 				}
 		else if (lc.type == "MOVE") {
@@ -93,7 +88,7 @@ int main() {
 		cout << "OK" << endl;
 		load=false;
         }
-        else if(token=="C" || token=="PL" || token=="L" || token=="OA" || token=="R" || token=="UNDO" || token=="REDO" || token=="MOVE" || token=="CLEAR" || token=="DELETE" ){
+        else if(token=="C" || token=="PL" || token=="L" || token=="OA" || token=="R" || token == "CLEAR" || token=="UNDO" || token=="REDO" || token=="MOVE" || token=="DELETE" ){
 		int a=1;
 		LectureEcriture l(commande,a);
 		LigneDeCommande lc;

@@ -21,6 +21,7 @@ public:
 	virtual void Afficher();
 	string GetType(); //virtual
 	virtual void Sauvegarder(ofstream& f);
+	virtual vector<long> GetPoints();
 	virtual ~ElementGeo();
 protected:
 	string nom;

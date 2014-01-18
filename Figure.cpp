@@ -18,7 +18,6 @@ using namespace std;
 void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 	map<string,ElementGeo*>::iterator it;
 	vector<long>::iterator itVec;
-
 	if (elements.find(nomObjet) == elements.end()) { // C'EST PAS LA PEINE PEUT-ETRE!!!
 		if (type == "C"){
 			ElementGeo* cercle = new Cercle(nomObjet, points[0], points[1], points[2]);
@@ -29,14 +28,18 @@ void Figure::Ajouter(string type, string nomObjet, vector<long> points){
 			elements[nomObjet] = rectangle;
 		}
 		else if (type == "L"){
-			ElementGeo* ligne = new Ligne(nomObjet, points[0], points[1], points[2], points[3]);
+			ElementGeo* ligne = new Ligne(type,nomObjet, points[0], points[1], points[2], points[3]);
 			elements[nomObjet] = ligne;
 		}
 		else if (type == "PL"){
 			ElementGeo* polyligne = new PolyLigne(nomObjet, points);
 			elements[nomObjet] = polyligne;
 		}
+		else{
+				cout << "ELSE" << endl;
+			}
 	}
+
 }
 
 void Figure::AjouterCommandeDansStack(Commande& cmd){
@@ -80,7 +83,12 @@ bool Figure::ExecuteUndo(bool op){
 			Deplacer(cmd.nom,(-1)*cmd.points[0],(-1)*cmd.points[1],vect);
 		}
 		if(cmd.numeroOperation==4){//4=clear
-
+			map<string, ElementGeo*>::iterator it=cmd.objetsCopiees.begin();
+			for(it=cmd.objetsCopiees.begin();it!=cmd.objetsCopiees.end();it++){
+				if(it->second->GetType()=="C" || it->second->GetType()=="R" || it->second->GetType()=="L"  || it->second->GetType()=="PL"){
+					Ajouter(it->second->GetType(),it->first,it->second->GetPoints());
+				}
+			}
 		}
 	}
 	return res;
@@ -120,10 +128,11 @@ bool Figure::ExecuteRedo(bool op){
 			vector<string> vect;
 			Deplacer(cmd.nom,cmd.points[0],cmd.points[1],vect);
 		}
-		}
 		if(cmd.numeroOperation==4){//clear
-
+			clear();
+				}
 		}
+
 	}
 	return res;
 }
@@ -218,6 +227,16 @@ void Figure::Sauvegarder(string nomFichier){
 		}
 }
 
+map<string, ElementGeo*> Figure::clear(){
+	map<string, ElementGeo*> objetcopiees;
+	map<string, ElementGeo*>::iterator it;
+	for(it=elements.begin();it!=elements.end();it++){
+		objetcopiees[it->first]=it->second;
+	}
+	elements.clear();
+
+	return objetcopiees;
+}
 	Figure::Figure(){
 		// TODO Auto-generated constructor stub
 	}

@@ -15,6 +15,20 @@
 //
 //}
 
+vector<long> PolyLigne::GetPoints(){
+	vector<long> a;
+	vector<long>::iterator it;
+	a.push_back(point1.GetX());
+	a.push_back(point1.GetY());
+	a.push_back(point2.GetX());
+	a.push_back(point2.GetY());
+	for(it=autresPoints.begin()+4;it!=autresPoints.end();it++){
+		a.push_back(*it);
+	}
+
+	return a;
+}
+
 
 PolyLigne::~PolyLigne() {
 	// TODO Auto-generated destructor stub

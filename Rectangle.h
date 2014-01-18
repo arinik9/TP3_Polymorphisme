@@ -17,10 +17,11 @@ using namespace std;
 class Rectangle:public ElementGeo {
 
 public:
-	Rectangle(string nom1, long x1,long y1,long x2,long y2):ElementGeo(nom1,"ES"), point1(Point(x1,y1)), point2(Point(x2,y2)){};
+	Rectangle(string nom1, long x1,long y1,long x2,long y2):ElementGeo(nom1,"R"), point1(Point(x1,y1)), point2(Point(x2,y2)){};
 	virtual ~Rectangle();
 	void Afficher();
 	void Deplacer(long x,long y,vector<string> objetsDeplaces);
+	vector<long> GetPoints();
 	void Sauvegarder(ofstream& f);
 
 protected :

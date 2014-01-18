@@ -29,3 +29,13 @@ void Cercle::Sauvegarder(ofstream& f){
 	Afficher();
 	cout.rdbuf(old_cout_buffer);
  }
+
+vector<long> Cercle::GetPoints(){
+	vector<long> a;
+	vector<long>::iterator it;
+	a.push_back(centre.GetX());
+	a.push_back(centre.GetY());
+	a.push_back(rayon);
+
+	return a;
+}

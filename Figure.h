@@ -19,6 +19,7 @@ struct Commande
 	vector<long> points;
 	set<string> listeObjetString;
 	int numeroOperation;
+	map<string, ElementGeo*> objetsCopiees;
 };
 
 class Figure {
@@ -38,6 +39,8 @@ public:
 	void Deplacer(string nom,long x,long y,vector<string> objetsDeplaces);
 	void Supprimer(set<string> listeObjets);
 	void Sauvegarder(string nomFichier);
+	//vector<long> ElementGeo::GetPoints();
+	map<string, ElementGeo*> clear();
 	virtual ~Figure();
 };
 
