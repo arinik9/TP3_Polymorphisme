@@ -1,3 +1,9 @@
+/*
+ * ObjetAgrege.h
+ *
+ *  Created on: 18 Oca 2014
+ *      Author: nejat
+ */
 
 #ifndef OBJETAGREGE_H_
 #define OBJETAGREGE_H_
@@ -5,17 +11,25 @@
 #include <string>
 #include <map>
 #include "ElementGeo.h"
+#include <algorithm>
 using namespace std;
 
-class ObjetAgrege :public ElementGeo
+class ObjetAgrege:public ElementGeo
 {
 private :
 	map<string, ElementGeo*> contenu;
 public:
-	ObjetAgrege(string nom):ElementGeo(nom,"OA"){};
-	void Deplacer(long x, long y, vector<string> objetsDeplaces);
+	ObjetAgrege(string nom) :ElementGeo(nom, "OA"){};
 	~ObjetAgrege();
-	//bool AjouterDansOA(ElementGeo* ajout);
+	void AjouterDansOA(string nomElement, ElementGeo* elementAjoute);
+	void EnleverDansOA(string nomElement);
+	void RetirerDesObjets();
+	void Afficher();
+	void Deplacer(long x, long y, vector<string> objetsDeplaces);
+	string GetNomObjet();
+	set<string> GetObjetsGeo();
+	string GetType();
 };
+
 
 #endif /* OBJETAGREGE_H_ */

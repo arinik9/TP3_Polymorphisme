@@ -9,36 +9,44 @@
 #include "Point.h"
 #include <iostream>
 
-void Ligne::Afficher(){
-	cout << "L " << nom << " " << point1.GetX() << " " << point1.GetY() << " " << point2.GetX() << " " << point2.GetY() << " " << endl;
+Ligne::~Ligne() {
+	// TODO Auto-generated destructor stub
 }
 
-void Ligne::Deplacer(long x,long y,vector<string> objetsDeplaces){
-	point1.SetX(point1.GetX()+x);
-	point1.SetY(point1.GetY()+y);
-	point2.SetX(point2.GetX()+x);
-	point2.SetY(point2.GetY()+y);
+void Ligne::Afficher(){
+	cout << "L " << nom << " " << point1.getX() << " " << point1.getY() << " " << point2.getX() << " " << point2.getY() << " " << endl;
+}
+
+void Ligne::Deplacer(long x, long y, vector<string> objetsDeplaces){
+	point1.setX(point1.getX() + x);
+	point1.setY(point1.getY() + y);
+	point2.setX(point2.getX() + x);
+	point2.setY(point2.getY() + y);
 }
 
 void Ligne::Sauvegarder(ofstream& f){
-	streambuf *file_buffer=f.rdbuf();
-	streambuf *old_cout_buffer=cout.rdbuf(file_buffer);
+	streambuf *file_buffer = f.rdbuf();
+	streambuf *old_cout_buffer = cout.rdbuf(file_buffer);
 	Afficher();
 	cout.rdbuf(old_cout_buffer);
- }
+}
+
+string Ligne::GetNomObjet(){
+ return nom;
+}
+
+string Ligne::GetType(){
+	return type;
+}
 
 vector<long> Ligne::GetPoints(){
 	cout << "LIGNE" << endl;
 	vector<long> a;
 	vector<long>::iterator it;
-	a.push_back(point1.GetX());
-	a.push_back(point1.GetY());
-	a.push_back(point2.GetX());
-	a.push_back(point2.GetY());
+	a.push_back(point1.getX());
+	a.push_back(point1.getY());
+	a.push_back(point2.getX());
+	a.push_back(point2.getY());
 
 	return a;
-}
-
-Ligne::~Ligne() {
-	// TODO Auto-generated destructor stub
 }

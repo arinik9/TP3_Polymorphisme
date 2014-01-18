@@ -8,7 +8,7 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 		int compteur=0;
 		int combienMot=0;
 		ligneEnCours.lengthFile=0;
-		unsigned int compteurPourSet=0;
+		unsigned int compteurPourset=0;
 		string s="",c="",u="";
 
 	string input="";
@@ -33,7 +33,7 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 	getline(ss, u, ' ');
 	int PremierMotTaille=u.length();
 
-	if((u=="C" && combienMot == 5)|| (u=="R" && combienMot == 6) || (u=="L" && combienMot == 6) || (u=="PL" && combienMot >= 4 && combienMot%2==0) || (u=="MOVE" && combienMot==4) ){
+	if((u=="C" && combienMot == 5)|| (u=="R" && combienMot == 6) || (u=="L" && combienMot == 6) || (u=="PL" && combienMot >= 4 && combienMot%2==0) || (u=="MOVE" && combienMot==4)){
 		ligneEnCours.type=u;
 		getline(ss, ligneEnCours.nom, ' ');
 		while(getline(ss, token, ' ')) {
@@ -56,10 +56,10 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 			getline(ss, ligneEnCours.nom, ' ');
 
 		while(getline(ss, token, ' ')) {
-			compteurPourSet++;
+			compteurPourset++;
 
 			ligneEnCours.listeObjets.insert(token);
-			if(compteurPourSet != ligneEnCours.listeObjets.size()){ // au lieu d'utiliser la methode find(), on compare juste les tailles
+			if(compteurPourset != ligneEnCours.listeObjets.size()){ // au lieu d'utiliser la methode find(), on compare juste les tailles
 				ligneEnCours.error=true;   break;
 			}
 		}
@@ -68,7 +68,7 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 		ligneEnCours.type=u;
 	}
 	else{
-		if(PremierMotTaille>0)
+		if (PremierMotTaille > 0)
 		ligneEnCours.error=true;
 	}
 	return ligneEnCours;

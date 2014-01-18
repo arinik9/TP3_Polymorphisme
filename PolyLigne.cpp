@@ -15,27 +15,13 @@
 //
 //}
 
-vector<long> PolyLigne::GetPoints(){
-	vector<long> a;
-	vector<long>::iterator it;
-	a.push_back(point1.GetX());
-	a.push_back(point1.GetY());
-	a.push_back(point2.GetX());
-	a.push_back(point2.GetY());
-	for(it=autresPoints.begin()+4;it!=autresPoints.end();it++){
-		a.push_back(*it);
-	}
-
-	return a;
-}
-
 
 PolyLigne::~PolyLigne() {
 	// TODO Auto-generated destructor stub
 }
 
 void PolyLigne::Afficher(){
-	cout << "PL " << nom << " " << point1.GetX() << " " << point1.GetY() << " " << point2.GetX() << " " << point2.GetY();
+	cout << "PL " << nom << " " << point1.getX() << " " << point1.getY() << " " << point2.getX() << " " << point2.getY();
 	if (autresPoints.size() != 0) {
 		vector<long>::iterator it;
 		for (it = autresPoints.begin()+4; it != autresPoints.end(); it++){
@@ -45,34 +31,54 @@ void PolyLigne::Afficher(){
 	cout << endl;
 }
 
-
-void PolyLigne::Deplacer(long x,long y, vector<string> objetsDeplaces){
-	point1.SetX(point1.GetX()+x);
-	point1.SetY(point1.GetY()+y);
-	point2.SetX(point2.GetX()+x);
-	point2.SetY(point2.GetY()+y);
+void PolyLigne::Deplacer(long x, long y, vector<string> objetsDeplaces){
+	point1.setX(point1.getX() + x);
+	point1.setY(point1.getY() + y);
+	point2.setX(point2.getX() + x);
+	point2.setY(point2.getY() + y);
 	if (autresPoints.size() != 0) {
-			vector<long>::iterator it;
-			bool pair = false;
-			for (it = autresPoints.begin() + 4; it != autresPoints.end(); it++){
-				if (!pair){
-					*it = *it + x;
-					pair = true;
-					cout << "IMPAIR" << endl;
-				}
-				else if (pair){
-				*it = *it + y;
-				pair = false;
-				cout << "PAIR" << endl;
+		vector<long>::iterator it;
+		bool pair = false;
+		for (it = autresPoints.begin() + 4; it != autresPoints.end(); it++){
+			if (!pair){
+				*it = *it + x;
+				pair = true;
+				cout << "IMPAIR" << endl;
 			}
-			}
+			else if (pair){
+			*it = *it + y;
+			pair = false;
+			cout << "PAIR" << endl;
 		}
+		}
+	}
 }
 
-
 void PolyLigne::Sauvegarder(ofstream& f){
-	streambuf *file_buffer=f.rdbuf();
-	streambuf *old_cout_buffer=cout.rdbuf(file_buffer);
+	streambuf *file_buffer = f.rdbuf();
+	streambuf *old_cout_buffer = cout.rdbuf(file_buffer);
 	Afficher();
 	cout.rdbuf(old_cout_buffer);
- }
+}
+
+string PolyLigne::GetNomObjet(){
+	return nom;
+}
+
+string PolyLigne::GetType(){
+	return type;
+}
+
+vector<long> PolyLigne::GetPoints(){
+	vector<long> a;
+	vector<long>::iterator it;
+	a.push_back(point1.getX());
+	a.push_back(point1.getY());
+	a.push_back(point2.getX());
+	a.push_back(point2.getY());
+	for(it=autresPoints.begin()+4;it!=autresPoints.end();it++){
+		a.push_back(*it);
+	}
+
+	return a;
+}

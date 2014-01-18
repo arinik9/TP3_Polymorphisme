@@ -15,26 +15,33 @@ Cercle::~Cercle() {
 }
 
 void Cercle::Afficher(){
-	cout << "C " << nom << " " << centre.GetX() << " " << centre.GetY() << " " << rayon << endl;
+	cout << "C " << nom << " " << centre.getX() << " " << centre.getY() << " " << rayon << endl;
 }
 
-void Cercle::Deplacer(long x,long y,vector<string> objetsDeplaces){
-	centre.SetX(centre.GetX()+x);
-	centre.SetY(centre.GetY()+y);
+void Cercle::Deplacer(long x, long y, vector<string> objetsDeplaces){
+	centre.setX(centre.getX() + x);
+	centre.setY(centre.getY() + y);
 }
 
 void Cercle::Sauvegarder(ofstream& f){
-	streambuf *file_buffer=f.rdbuf();
-	streambuf *old_cout_buffer=cout.rdbuf(file_buffer);
+	streambuf *file_buffer = f.rdbuf();
+	streambuf *old_cout_buffer = cout.rdbuf(file_buffer);
 	Afficher();
 	cout.rdbuf(old_cout_buffer);
- }
+}
+string Cercle::GetNomObjet(){
+	return nom;
+}
+
+string Cercle::GetType(){
+	return type;
+}
 
 vector<long> Cercle::GetPoints(){
 	vector<long> a;
 	vector<long>::iterator it;
-	a.push_back(centre.GetX());
-	a.push_back(centre.GetY());
+	a.push_back(centre.getX());
+	a.push_back(centre.getY());
 	a.push_back(rayon);
 
 	return a;

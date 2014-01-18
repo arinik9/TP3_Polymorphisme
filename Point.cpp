@@ -12,18 +12,18 @@ Point::~Point() {
 	// TODO Auto-generated destructor stub
 }
 
-long Point::GetX(){
+long Point::getX(){
 	return x;
 }
 
-long Point::GetY(){
+long Point::getY(){
 	return y;
 }
 
-void Point::SetX(long x){
+void Point::setX(long x){
 	this->x = x;
 }
 
-void Point::SetY(long y){
+void Point::setY(long y){
 	this->y = y;
 }

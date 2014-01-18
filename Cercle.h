@@ -10,15 +10,18 @@
 
 #include "ElementGeo.h"
 #include "Point.h"
+#include <vector>
 
 class Cercle: public ElementGeo {
 public:
-	Cercle(string nom1,long x1,long y1,long rayon1):ElementGeo(nom1,"C"), centre(Point(x1,y1)),rayon(rayon1){}
+	Cercle(string nom1,long x1,long y1,long rayon1):ElementGeo(nom1, "C"), centre(Point(x1,y1)),rayon(rayon1){}
 	virtual ~Cercle();
 	void Afficher();
-	vector<long> GetPoints();
-	void Deplacer(long x,long y,vector<string> objetsDeplaces);
+	void Deplacer(long x, long y, vector<string> objetsDeplaces);
 	void Sauvegarder(ofstream& f);
+	string GetNomObjet();
+	string GetType();
+	vector<long> GetPoints();
 protected:
 	Point centre;
 	long rayon;
