@@ -1,39 +1,37 @@
-/*
- C c1 1 2 3
-OA oa1 c1 r1
-R r1 1 2 3 4
-DELETE c1 oa1 r1
-*/
-
 #include "Figure.h"
 #include <string>
 #include <vector>
 #include <sstream>
 #include <iostream>
 #include "LectureEcriture.h"
-//#include "Cercle.h"
 
 using namespace std;
 
-void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChange) {
+bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChange, int& loadFail) {
 	Commande cmd;
 	cmd.nom = lc.nom;
 	cmd.type = lc.type;
 	cmd.points = lc.points;
 	cmd.listeObjetString = lc.listeObjets;
-	//ajouter=1;
+	// numeroOperation :
+	// ajouter=1;
 	// supprimer=2;
 	// deplacer=3;
 	// clear=4;
 	// undo=5;
 	// redo=6;
+	bool succes=false;
 	if (!lc.error) {
+
 		if (lc.type == "PL" || lc.type == "C" || lc.type == "R" || lc.type == "L") {
-			myFig.Ajouter(lc.type, lc.nom, lc.points);
+			succes = myFig.Ajouter(lc.type, lc.nom, lc.points, load);
 			cmd.numeroOperation = 1;
 		}
 		else if (lc.type == "OA") {
-			myFig.AjouterOA(lc.nom, lc.listeObjets);
+			succes = myFig.AjouterOA(lc.nom, lc.listeObjets, load);
+			if (succes== false){
+				loadFail++;
+			}
 			cmd.numeroOperation = 1;
 		}
 		else if (lc.type == "UNDO") {
@@ -49,58 +47,55 @@ void TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChang
 			set<string>::iterator it;
 			for(it=lc.listeObjets.begin();it!=lc.listeObjets.end();it++){
 				set<string> a;
-				cmd.type=myFig.GetType(*it);
+				cmd.type=myFig.getType(*it);
 				if(cmd.type=="OA"){
-					a=myFig.GetContenuObjet(cmd.type,*it);
+					a=myFig.getContenuObjet(*it);
+					set<string> b;
+					b = myFig.getListeOA(*it);
 					cmd.contenuEtType[*it].contenuPlusieursObjetsString=a;
+					cmd.contenuEtType[*it].listeDesOA = b;
 					cmd.contenuEtType[*it].type=cmd.type;
 				}
-				else{
-					cmd.points=myFig.GetPoints(cmd.type,*it);
+				else if (cmd.type != ""){
+					cmd.points=myFig.getPoints(cmd.type,*it);
 					cmd.contenuEtType[*it].vects=cmd.points;
 					cmd.contenuEtType[*it].type=cmd.type;
+					a = myFig.getListeOA(*it);
+					cmd.contenuEtType[*it].listeDesOA = a;
 				}
 			}
-			myFig.Supprimer(lc.listeObjets);
+			succes = myFig.Supprimer(lc.listeObjets);
 
 		}
 		else if (lc.type == "CLEAR") {
-			//map<string, ElementGeo*> objetCopiees;
 			cmd.objetsCopiees=myFig.clear();
-			cout << "size"<<cmd.objetsCopiees.size()<< endl;
 			cmd.numeroOperation = 4;
+			succes = true;
 		}
 		else if (lc.type == "MOVE") {
 			vector<string> objetsDeplaces;
-			myFig.Deplacer(lc.nom, lc.points[0], lc.points[1], objetsDeplaces);
+			succes = myFig.Deplacer(lc.nom, lc.points[0], lc.points[1], objetsDeplaces);
 			cmd.numeroOperation = 3;
 		}
-
-
-		if (cmd.numeroOperation <= 4 && cmd.numeroOperation >= 1 && !load){
+		if (cmd.numeroOperation <= 4 && cmd.numeroOperation >= 1 && load==false && succes==true){
 			myFig.AjouterCommandeDansStack(cmd);
-
 		}
+
 	}
 		else if (lc.error) {
-			cout << "ERR" << endl;
+			cout << "ERR" << endl << "#Invalid arguments" << endl;
+			return false;
 		}
+	return succes;
 }
 
-/*void TraiterCommande(string type){
-	if (type == "LIST"){
-		cout << "LIIIIIST" << endl;
-	}
 
-		map<string, ElementGeo*>::iterator it;
-		cout << "Nom : " << it->first << " Rayon : " << ((Cercle*)(it->second))->getRayon() << endl;
-	}*/
-//}
 
 int main() {
         Figure myFig;
 		bool load = false;
 		bool operationQuiChangeQqchSurEcran = false;
+		int loadFail = 1;
         string commande;
         std::string token;
         do {
@@ -111,44 +106,70 @@ int main() {
 
         if(token=="LOAD"){
 			load = true;
+			//int compte = 0;
 			getline(ss, token, '\n');
-			if(token.substr(token.length()-4,4) == ".txt"){
-				LectureEcriture l(token.c_str());//"/home/nejat/Masaüstü/toto.txt"
-				while(!l.EstFini()){
-					LigneDeCommande lc;
-					lc=l.ProchainLigne();
-					TraiterCommande(lc, myFig, load, operationQuiChangeQqchSurEcran);
+			if (token=="LOAD"){
+				cout << "ERR" << endl << "#Please enter a file name" << endl;
+			}
+			else{
+				if (token.substr(token.length() - 4, 4) == ".txt"){
+					bool ouverture;
+					while (loadFail > 0){
+						LectureEcriture l(token.c_str());//"/home/nejat/Masaüstü/toto.txt"
+						loadFail = 0;
+						ouverture = l.getOuverture();
+						if (ouverture == true){
+							myFig.clear();
+							myFig.ViderStacks();
+							while (!l.EstFini()){
+								LigneDeCommande lc;
+								lc = l.ProchainLigne();
+								TraiterCommande(lc, myFig, load, operationQuiChangeQqchSurEcran, loadFail);
+							}
+						}
+					}
+					if (ouverture) cout << "OK" << endl;
+				}
+				else{
+					cout << "ERR" << endl << "#The end of the file name must be \".txt\"" << endl;
 				}
 			}
-			cout << "OK" << endl;
 			load = false;
+			loadFail = 1;
         }
 		else if (token == "C" || token == "PL" || token == "L" || token == "OA" || token == "R" || token == "UNDO" || token == "REDO" || token == "MOVE" || token == "CLEAR" || token == "DELETE"){
-		int a=1;
-		LectureEcriture l(commande,a);
-		LigneDeCommande lc;
-		lc=l.ProchainLigne();
-		TraiterCommande(lc, myFig, load, operationQuiChangeQqchSurEcran);
-		cout << "OK" << endl;
+			int a=1;
+			LectureEcriture l(commande,a);
+			LigneDeCommande lc;
+			lc=l.ProchainLigne();
+			bool succes=TraiterCommande(lc, myFig, load, operationQuiChangeQqchSurEcran, a);
 
-		if (token != "UNDO" && token != "REDO"){
-			operationQuiChangeQqchSurEcran = true;
-		}
-		else{
-			operationQuiChangeQqchSurEcran = false;
-		}
+			if (token != "UNDO" && token != "REDO" && succes){
+				operationQuiChangeQqchSurEcran = true;
+			}
+			else{
+				operationQuiChangeQqchSurEcran = false;
+			}
         }
 		else if (token == "LIST"){
 			myFig.Afficher();
 		}
 		else if (token == "SAVE"){
 			getline(ss, token, '\n');
-			if (token.substr(token.length() - 4, 4) == ".txt"){
-				myFig.Sauvegarder(token);
-				cout << "OK" << endl;
+			if (token == "SAVE"){
+				cout << "ERR" << endl << "#Please enter a file name" << endl;
 			}
-			else
-				cout << "ERR" << endl << "#ecrivez .txt pour le fichier!" << endl;
+			else{
+				if (token.substr(token.length() - 4, 4) == ".txt"){
+					myFig.Sauvegarder(token);
+					cout << "OK" << endl;
+				}
+				else
+					cout << "ERR" << endl << "#The end of the file name must be \".txt\"" << endl;
+			}
+		}
+		else{
+			cout << "ERR" << endl << "#Invalid command" << endl;
 		}
 		}while(token!="EXIT");
 

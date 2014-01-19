@@ -9,18 +9,39 @@
 #include "ObjetAgrege.h"
 #include <vector>
 
-
 ElementGeo::~ElementGeo() {
 	// TODO Auto-generated destructor stub
 }
 
-string ElementGeo::GetType(){
+string ElementGeo::getType(){
 	return type;
 }
 
+string ElementGeo::getNom(){
+	return nom;
+}
+
 void ElementGeo::Afficher(){}
-void ElementGeo::Deplacer(long x, long y, vector<string> objetsDeplaces){}
+void ElementGeo::Deplacer(long x, long y, vector<string>& objetsDeplaces){}
 void ElementGeo::Sauvegarder(ofstream& f){}
+vector<long> ElementGeo::getPoints(){
+	vector<long> a;
+	return a;
+}
+set<string> ElementGeo::getObjetsGeo(){
+	set<string> a;
+	return a;
+}
+
+set<string> ElementGeo::getObjetsAgreges(){
+	set<string> set;
+	map<string, ObjetAgrege*>::iterator it;
+	for (it = listeOA.begin(); it != listeOA.end(); it++){
+		string nomObjet = it->first;
+		set.insert(nomObjet);
+	}
+	return set;
+}
 
  void ElementGeo::AjouterDansListeOA(string nomObjet, ObjetAgrege* objet){
 	 if (listeOA.find(nomObjet) == listeOA.end()){
@@ -40,19 +61,3 @@ void ElementGeo::Sauvegarder(ofstream& f){}
 		 it->second->EnleverDansOA(nom);
 	 }
  }
-
- set<string> ElementGeo::GetObjetsGeo(){
-	set<string> a;
-	 return a;
- }
-
- string ElementGeo::GetNomObjet(){
-	 string a;
-	 return a;
- }
-
- vector<long> ElementGeo::GetPoints(){
-
- 	 vector<long> a;
- 	 return a;
-  }

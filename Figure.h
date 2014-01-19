@@ -11,20 +11,26 @@
 
 #include <iostream>
 #include <list>
-#include "string"
 #include <vector>
-#include "ElementGeo.h"
 #include <map>
 #include <set>
-#include "ObjetAgrege.h"
 #include <stack>
-
+#include "ObjetAgrege.h"
+#include "Cercle.h"
+#include "Rectangle.h"
+#include "Ligne.h"
+#include "PolyLigne.h"
+class ElementGeo;
+class Ligne;
 using namespace std;
+
 struct PlusieursChoseEtType{
 	vector<long> vects;
 	string type;
 	set<string> contenuPlusieursObjetsString;
+	set<string> listeDesOA;
 };
+
 struct Commande
 {
 	string nom;
@@ -44,19 +50,21 @@ private:
 	stack<Commande> Redo;
 public:
 	Figure();
-	void Ajouter(string type, string nomObjet, vector<long> points); // on va utiliser REFERENCE????
-	void AjouterOA(string nomObjet, set<string> listeObjets); //Méthode ajouter pour les OA
+	bool Ajouter(string type, string nomObjet, vector<long> points, bool load); // on va utiliser REFERENCE????
+	bool AjouterOA(string nomObjet, set<string> listeObjets, bool load); //Méthode ajouter pour les OA
 	void AjouterCommandeDansStack(Commande& cmd);
 	bool ExecuteUndo(bool op);
 	bool ExecuteRedo(bool op);
+	void ViderStacks();
 	void Afficher();
-	void Supprimer(set<string> listeObjets);
-	void Deplacer(string nom, long x, long y, vector<string> objetsDeplaces);
+	bool Supprimer(set<string> listeObjets);
+	bool Deplacer(string nom, long x, long y, vector<string>& objetsDeplaces);
 	void Sauvegarder(string nomFichier);
-	set<string> GetContenuObjet(string type,string nom);
-	string GetType(string nom);
 	map<string, ElementGeo*> clear();
-	vector<long> GetPoints(string type,string nom);
+	set<string> getContenuObjet(string nom);
+	set<string> getListeOA(string nom);
+	string getType(string nom);
+	vector<long> getPoints(string type, string nom);
 	virtual ~Figure();
 };
 

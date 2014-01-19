@@ -1,7 +1,6 @@
 #include "ObjetAgrege.h"
 #include <iostream>
 #include <map>
-#include <set>
 #include <vector>
 
 using namespace std;
@@ -43,7 +42,7 @@ void ObjetAgrege::Afficher(){
 	cout << endl;
 }
 
-void ObjetAgrege::Deplacer(long x, long y, vector<string> objetsDeplaces){
+void ObjetAgrege::Deplacer(long x, long y, vector<string>& objetsDeplaces){
 	map<string, ElementGeo*>::iterator itMap;
 	for (itMap = contenu.begin(); itMap != contenu.end(); itMap++){
 		if (find(objetsDeplaces.begin(), objetsDeplaces.end(), itMap->first) == objetsDeplaces.end()){
@@ -53,22 +52,20 @@ void ObjetAgrege::Deplacer(long x, long y, vector<string> objetsDeplaces){
 	}
 }
 
-set<string> ObjetAgrege::GetObjetsGeo(){
+void ObjetAgrege::Sauvegarder(ofstream& f){
+	streambuf *file_buffer = f.rdbuf();
+	streambuf *old_cout_buffer = cout.rdbuf(file_buffer);
+	Afficher();
+	cout.rdbuf(old_cout_buffer);
+}
+
+set<string> ObjetAgrege::getObjetsGeo(){
 	set<string> set;
 	map<string, ElementGeo*>::iterator it;
 	for(it=contenu.begin();it!=contenu.end();it++){
-		string nomObjet=it->second->GetNomObjet();
+		string nomObjet=it->second->getNom();
 		set.insert(nomObjet);
 	}
 
 	return set;
-}
-
-string ObjetAgrege::GetNomObjet(){
-	return nom;
-}
-
-
-string ObjetAgrege::GetType(){
-	return type;
 }

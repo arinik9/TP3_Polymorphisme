@@ -28,7 +28,9 @@ private:
 	ifstream myFile;
 	string commandeManuel;
 	int enVeine;
+	bool ouverture;
 public:
+	bool getOuverture();
 	LigneDeCommande ProchainLigne();
 	LectureEcriture(string nomFichier);
 	LectureEcriture(string command,int a);

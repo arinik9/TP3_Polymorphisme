@@ -1,15 +1,9 @@
-/*
- * ObjetAgrege.h
- *
- *  Created on: 18 Oca 2014
- *      Author: nejat
- */
-
 #ifndef OBJETAGREGE_H_
 #define OBJETAGREGE_H_
 
 #include <string>
 #include <map>
+#include <set>
 #include "ElementGeo.h"
 #include <algorithm>
 using namespace std;
@@ -25,10 +19,9 @@ public:
 	void EnleverDansOA(string nomElement);
 	void RetirerDesObjets();
 	void Afficher();
-	void Deplacer(long x, long y, vector<string> objetsDeplaces);
-	string GetNomObjet();
-	set<string> GetObjetsGeo();
-	string GetType();
+	void Deplacer(long x, long y, vector<string>& objetsDeplaces);
+	void Sauvegarder(ofstream& f);
+    set<string> getObjetsGeo();
 };
 
 

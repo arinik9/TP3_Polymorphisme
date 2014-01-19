@@ -18,7 +18,7 @@ void Cercle::Afficher(){
 	cout << "C " << nom << " " << centre.getX() << " " << centre.getY() << " " << rayon << endl;
 }
 
-void Cercle::Deplacer(long x, long y, vector<string> objetsDeplaces){
+void Cercle::Deplacer(long x, long y, vector<string>& objetsDeplaces){
 	centre.setX(centre.getX() + x);
 	centre.setY(centre.getY() + y);
 }
@@ -29,15 +29,7 @@ void Cercle::Sauvegarder(ofstream& f){
 	Afficher();
 	cout.rdbuf(old_cout_buffer);
 }
-string Cercle::GetNomObjet(){
-	return nom;
-}
-
-string Cercle::GetType(){
-	return type;
-}
-
-vector<long> Cercle::GetPoints(){
+vector<long> Cercle::getPoints(){
 	vector<long> a;
 	vector<long>::iterator it;
 	a.push_back(centre.getX());

@@ -10,7 +10,7 @@ void Rectangle::Afficher(){
 	cout << "R " << nom << " " << point1.getX() << " " << point1.getY() << " " << point2.getX() << " " << point2.getY() << " " << endl;
 }
 
-void Rectangle::Deplacer(long x1, long y1, vector<string> objetsDeplaces){
+void Rectangle::Deplacer(long x1, long y1, vector<string>& objetsDeplaces){
 	//deplacement du 1er point
 	point1.setX(point1.getX() + x1);
 	point1.setY(point1.getY() + y1);
@@ -25,16 +25,7 @@ void Rectangle::Sauvegarder(ofstream& f){
 	Afficher();
 	cout.rdbuf(old_cout_buffer);
 }
-
-string Rectangle::GetNomObjet(){
-return nom;
-}
-
-string Rectangle::GetType(){
-	return type;
-}
-
-vector<long> Rectangle::GetPoints(){
+ vector<long> Rectangle::getPoints(){
 	vector<long> a;
 	vector<long>::iterator it;
 	a.push_back(point1.getX());

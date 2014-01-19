@@ -12,10 +12,12 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 		string s="",c="",u="";
 
 	string input="";
-	if(enVeine==1)	//commandeManuel.length()==0
-		input=commandeManuel; // on saisie les commandes par la console donc on utilise cela
-	else
-		getline(myFile,input); //on saisi les commandes par le fichier avec option LOAD
+	if (enVeine == 1){	//commandeManuel.length()==0
+		input = commandeManuel; // on saisie les commandes par la console donc on utilise cela
+	}
+	else{
+		getline(myFile, input); //on saisi les commandes par le fichier avec option LOAD
+	}
 
 	 ligneEnCours.tailleLigne=input.length();
 	 for(int i=0;i<ligneEnCours.tailleLigne;i++){
@@ -50,7 +52,7 @@ LigneDeCommande LectureEcriture::ProchainLigne()
 			}
 		}
 	}
-	else if((u=="OA" && combienMot>1) || u=="DELETE"){
+	else if((u=="OA" && combienMot>1) || (u=="DELETE" && combienMot>1)){
 		ligneEnCours.type=u;
 		if(u!="DELETE")
 			getline(ss, ligneEnCours.nom, ' ');
@@ -79,9 +81,19 @@ bool LectureEcriture:: EstFini()
 return(myFile.eof());
 }
 
-LectureEcriture::LectureEcriture(string nomFichier):myFile(nomFichier.c_str()) {
+LectureEcriture::LectureEcriture(string nomFichier){
 	// TODO Auto-generated constructor stub
+	myFile.open(nomFichier.c_str());
+	if (myFile.fail() == true){
+		ouverture = false;
+		cout << "ERR" << endl << "#The file does not exist" << endl;
+	}
+	else ouverture = true;
 
+}
+
+bool LectureEcriture::getOuverture(){
+	return ouverture;
 }
 
 LectureEcriture::LectureEcriture(string command, int a):commandeManuel(command), enVeine(a){

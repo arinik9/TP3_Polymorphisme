@@ -31,7 +31,7 @@ void PolyLigne::Afficher(){
 	cout << endl;
 }
 
-void PolyLigne::Deplacer(long x, long y, vector<string> objetsDeplaces){
+void PolyLigne::Deplacer(long x, long y, vector<string>& objetsDeplaces){
 	point1.setX(point1.getX() + x);
 	point1.setY(point1.getY() + y);
 	point2.setX(point2.getX() + x);
@@ -43,12 +43,10 @@ void PolyLigne::Deplacer(long x, long y, vector<string> objetsDeplaces){
 			if (!pair){
 				*it = *it + x;
 				pair = true;
-				cout << "IMPAIR" << endl;
 			}
 			else if (pair){
 			*it = *it + y;
 			pair = false;
-			cout << "PAIR" << endl;
 		}
 		}
 	}
@@ -61,15 +59,7 @@ void PolyLigne::Sauvegarder(ofstream& f){
 	cout.rdbuf(old_cout_buffer);
 }
 
-string PolyLigne::GetNomObjet(){
-	return nom;
-}
-
-string PolyLigne::GetType(){
-	return type;
-}
-
-vector<long> PolyLigne::GetPoints(){
+vector<long> PolyLigne::getPoints(){
 	vector<long> a;
 	vector<long>::iterator it;
 	a.push_back(point1.getX());
