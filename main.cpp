@@ -6,6 +6,8 @@
 #include "LectureEcriture.h"
 using namespace std;
 
+// Hatirlatma: gcc ile olusturudugun executable'i yanina '< dosya.txt' yaparak birden fazla elle komut satiri yazmis gibi oluyorsun
+//ornegin;  	./heritage < Tests10.txt
 
 bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChange, int& loadFail) {
 	Commande cmd;
