@@ -35,6 +35,7 @@ public:
 	LectureEcriture(string nomFichier);
 	LectureEcriture(string command,int a);
 	bool EstFini();
+	bool verifierSeparateurDansLeNom(string nom);
 	virtual ~LectureEcriture();
 };
 

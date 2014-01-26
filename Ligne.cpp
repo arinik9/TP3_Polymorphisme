@@ -31,7 +31,6 @@ void Ligne::Sauvegarder(ofstream& f){
 	cout.rdbuf(old_cout_buffer);
 }
 vector<long> Ligne::getPoints(){
-	cout << "LIGNE" << endl;
 	vector<long> a;
 	vector<long>::iterator it;
 	a.push_back(point1.getX());

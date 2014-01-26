@@ -36,7 +36,7 @@ set<string> ElementGeo::getObjetsGeo(){
 set<string> ElementGeo::getObjetsAgreges(){
 	set<string> set;
 	map<string, ObjetAgrege*>::iterator it;
-	for (it = listeOA.begin(); it != listeOA.end(); it++){
+	for (it = listeOA.begin(); it != listeOA.end(); ++it){
 		string nomObjet = it->first;
 		set.insert(nomObjet);
 	}
@@ -57,7 +57,7 @@ set<string> ElementGeo::getObjetsAgreges(){
 
  void ElementGeo::RetirerDesOA(){
 	 map<string, ObjetAgrege*>::iterator it;
-	 for (it = listeOA.begin(); it != listeOA.end(); it++){
+	 for (it = listeOA.begin(); it != listeOA.end(); ++it){
 		 it->second->EnleverDansOA(nom);
 	 }
  }

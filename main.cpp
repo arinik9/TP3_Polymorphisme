@@ -4,8 +4,8 @@
 #include <sstream>
 #include <iostream>
 #include "LectureEcriture.h"
-
 using namespace std;
+
 
 bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChange, int& loadFail) {
 	Commande cmd;
@@ -22,14 +22,20 @@ bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChang
 	// redo=6;
 	bool succes=false;
 	if (!lc.error) {
-
 		if (lc.type == "PL" || lc.type == "C" || lc.type == "R" || lc.type == "L") {
 			succes = myFig.Ajouter(lc.type, lc.nom, lc.points, load);
 			cmd.numeroOperation = 1;
 		}
 		else if (lc.type == "OA") {
-			succes = myFig.AjouterOA(lc.nom, lc.listeObjets, load);
-			if (succes== false){
+			int reussi = myFig.AjouterOA(lc.nom, lc.listeObjets, load);
+			if(reussi==0){
+				succes=false;
+			}
+			else if(reussi==1){
+				succes=true;
+			}
+			else if(reussi==2){
+				succes = false;
 				loadFail++;
 			}
 			cmd.numeroOperation = 1;
@@ -48,15 +54,15 @@ bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChang
 			for(it=lc.listeObjets.begin();it!=lc.listeObjets.end();it++){
 				set<string> a;
 				cmd.type=myFig.getType(*it);
-				if(cmd.type=="OA"){
+				if(cmd.type=="OA"){//type=OA
 					a=myFig.getContenuObjet(*it);
 					set<string> b;
 					b = myFig.getListeOA(*it);
 					cmd.contenuEtType[*it].contenuPlusieursObjetsString=a;
 					cmd.contenuEtType[*it].listeDesOA = b;
-					cmd.contenuEtType[*it].type=cmd.type;
+					cmd.contenuEtType[*it].type=cmd.type;// c'est efficace quand on differencie les OA et les objet simples
 				}
-				else if (cmd.type != ""){
+				else if (cmd.type != ""){ //type != OA
 					cmd.points=myFig.getPoints(cmd.type,*it);
 					cmd.contenuEtType[*it].vects=cmd.points;
 					cmd.contenuEtType[*it].type=cmd.type;
@@ -68,7 +74,7 @@ bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChang
 
 		}
 		else if (lc.type == "CLEAR") {
-			cmd.objetsCopiees=myFig.clear();
+			cmd.objetsCopiees=myFig.clear(false);
 			cmd.numeroOperation = 4;
 			succes = true;
 		}
@@ -78,13 +84,12 @@ bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChang
 			cmd.numeroOperation = 3;
 		}
 		if (cmd.numeroOperation <= 4 && cmd.numeroOperation >= 1 && load==false && succes==true){
-			myFig.AjouterCommandeDansStack(cmd);
+			myFig.AjouterCommandeDansStack(cmd);// pour ajouter dans le Stack; il faut avoir lieu un changement sur l'ecran imaginaire
 		}
-
 	}
 		else if (lc.error) {
-			cout << "ERR" << endl << "#Invalid arguments" << endl;
-			return false;
+			cout << "ERR" << endl;
+			cout << "#Invalid arguments" << endl;
 		}
 	return succes;
 }
@@ -93,9 +98,9 @@ bool TraiterCommande(LigneDeCommande& lc, Figure& myFig, bool load, bool opChang
 
 int main() {
         Figure myFig;
-		bool load = false;
-		bool operationQuiChangeQqchSurEcran = false;
-		int loadFail = 1;
+	bool load = false;
+	bool operationQuiChangeQqchSurEcran = false;
+	int loadFail = 1;
         string commande;
         std::string token;
         do {
@@ -106,32 +111,34 @@ int main() {
 
         if(token=="LOAD"){
 			load = true;
-			//int compte = 0;
-			getline(ss, token, '\n');
-			if (token=="LOAD"){
-				cout << "ERR" << endl << "#Please enter a file name" << endl;
+			getline(ss, token, '\n');// on saisie la ligne entiere 
+			if (token=="LOAD"){// si le nom de fichier n'est pas ecrit a cote de la commande LOAD 
+				cout << "ERR" << endl;
+				cout << "#Please enter a file name" << endl;
 			}
 			else{
-				if (token.substr(token.length() - 4, 4) == ".txt"){
+				if (token.substr(token.length() - 4, 4) == ".txt"){// on oblige l'utilisation d'un fichier .txt
 					bool ouverture;
-					while (loadFail > 0){
-						LectureEcriture l(token.c_str());//"/home/nejat/Masaüstü/toto.txt"
-						loadFail = 0;
-						ouverture = l.getOuverture();
-						if (ouverture == true){
-							myFig.clear();
-							myFig.ViderStacks();
-							while (!l.EstFini()){
+					LectureEcriture l(token.c_str());
+					ouverture = l.getOuverture();
+					if (ouverture == true){
+						myFig.clear(true);// quand on fait LOAD, on efface tout
+						myFig.ViderStacks();
+						while (loadFail > 0){
+							LectureEcriture l(token.c_str());
+							loadFail = 0;
+							while (!l.EstFini()){ //jusqu'a la derniere ligne du fichier 
 								LigneDeCommande lc;
 								lc = l.ProchainLigne();
-								TraiterCommande(lc, myFig, load, operationQuiChangeQqchSurEcran, loadFail);
+								TraiterCommande(lc, myFig, load, operationQuiChangeQqchSurEcran, loadFail);//Avec le booleen loadFail, on affiche pas "OK" pour chaque commande qui a l"effet de changement
 							}
 						}
+						cout << "OK" << endl;
 					}
-					if (ouverture) cout << "OK" << endl;
 				}
 				else{
-					cout << "ERR" << endl << "#The end of the file name must be \".txt\"" << endl;
+					cout << "ERR" << endl;
+					cout << "#The end of the file name must be \".txt\"" << endl;
 				}
 			}
 			load = false;
@@ -157,75 +164,30 @@ int main() {
 		else if (token == "SAVE"){
 			getline(ss, token, '\n');
 			if (token == "SAVE"){
-				cout << "ERR" << endl << "#Please enter a file name" << endl;
+				cout << "ERR" << endl;
+				cout << "#Please enter a file name" << endl;
 			}
 			else{
 				if (token.substr(token.length() - 4, 4) == ".txt"){
 					myFig.Sauvegarder(token);
 					cout << "OK" << endl;
 				}
-				else
-					cout << "ERR" << endl << "#The end of the file name must be \".txt\"" << endl;
+				else{
+					cout << "ERR" << endl;
+					cout << "#The end of the file name must be \".txt\"" << endl;
+				}
 			}
 		}
+		else if(token=="EXIT"){
+			myFig.clear(true);
+		}
 		else{
-			cout << "ERR" << endl << "#Invalid command" << endl;
+			cout << "ERR" << endl;
+			cout << "#Invalid command" << endl;
 		}
 		}while(token!="EXIT");
 
-
-
-	/*
-
-	string commande;
-	vector<long> vect;
-	//cout << "C:  ";
-	getline(std::cin, commande);
-	string temp;
-	int counter = 0;
-	string toPush;
-	long li;
-	string comp = " ";
-
-	for (unsigned int i = 0; i < commande.length(); i++) {
-		if (commande.at(i) == ' ') {
-			 if (counter >= 2) {
-				stringstream ss;
-			    ss << toPush;
-			    ss >> li;
-			    vect.push_back(li);
-			    toPush = "";
-			    counter++;
-			}
-			else {
-				counter++;
-			}
-		}
-		else {
-			if(counter >= 2){
-			toPush = toPush + commande[i];
-			}
-		}
-
-	}
-	stringstream ss1;
-	 ss1 << toPush;
-	 ss1 >> li;
-
-	 cout << "R:  OK"<< endl;
-	std::cout << "our vectors: ";
-	for (std::vector<long>::iterator it = vect.begin(); it != vect.end();
-			++it)
-		std::cout << ' ' << *it;
-
-
-*/
-	 /*Figure myfigure;
-	 myfigure.ajouter(typ, nom,vect);
-	 vect.clear();
-	 //void figure::ajouter(string typeElement,string nom,const vector<long>& vec){*/
 	 return 0;
 
-	// test imprimer le vector
-
 }
+

@@ -50,8 +50,8 @@ private:
 	stack<Commande> Redo;
 public:
 	Figure();
-	bool Ajouter(string type, string nomObjet, vector<long> points, bool load); // on va utiliser REFERENCE????
-	bool AjouterOA(string nomObjet, set<string> listeObjets, bool load); //MÃ©thode ajouter pour les OA
+	bool Ajouter(string type, string nomObjet, vector<long> points, bool discret); // on va utiliser REFERENCE????
+	int AjouterOA(string nomObjet, set<string> listeObjets, bool discret); //Méthode ajouter pour les OA
 	void AjouterCommandeDansStack(Commande& cmd);
 	bool ExecuteUndo(bool op);
 	bool ExecuteRedo(bool op);
@@ -60,7 +60,7 @@ public:
 	bool Supprimer(set<string> listeObjets);
 	bool Deplacer(string nom, long x, long y, vector<string>& objetsDeplaces);
 	void Sauvegarder(string nomFichier);
-	map<string, ElementGeo*> clear();
+	map<string, ElementGeo*> clear(bool del);
 	set<string> getContenuObjet(string nom);
 	set<string> getListeOA(string nom);
 	string getType(string nom);

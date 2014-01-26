@@ -5,7 +5,6 @@
 #include <map>
 #include <set>
 #include "ElementGeo.h"
-#include <algorithm>
 using namespace std;
 
 class ObjetAgrege:public ElementGeo
@@ -23,6 +22,5 @@ public:
 	void Sauvegarder(ofstream& f);
     set<string> getObjetsGeo();
 };
-
 
 #endif /* OBJETAGREGE_H_ */

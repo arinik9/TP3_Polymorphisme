@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,7 +27,7 @@ void ObjetAgrege::EnleverDansOA(string nomElement){
 
 void ObjetAgrege::RetirerDesObjets(){
 	map<string, ElementGeo*>::iterator itOA;
-	for (itOA = contenu.begin(); itOA != contenu.end(); itOA++){
+	for (itOA = contenu.begin(); itOA != contenu.end(); ++itOA){
 		itOA->second->EnleverDansListeOA(nom);
 	}
 }
@@ -35,7 +36,7 @@ void ObjetAgrege::Afficher(){
 	cout << "OA " << nom;
 	if (contenu.size() != 0){
 		map<string, ElementGeo*>::iterator it;
-		for (it = contenu.begin(); it != contenu.end(); it++){
+		for (it = contenu.begin(); it != contenu.end(); ++it){
 			cout << " " << it->first;
 		}
 	}
@@ -44,7 +45,7 @@ void ObjetAgrege::Afficher(){
 
 void ObjetAgrege::Deplacer(long x, long y, vector<string>& objetsDeplaces){
 	map<string, ElementGeo*>::iterator itMap;
-	for (itMap = contenu.begin(); itMap != contenu.end(); itMap++){
+	for (itMap = contenu.begin(); itMap != contenu.end(); ++itMap){
 		if (find(objetsDeplaces.begin(), objetsDeplaces.end(), itMap->first) == objetsDeplaces.end()){
 			itMap->second->Deplacer(x, y, objetsDeplaces);
 			objetsDeplaces.push_back(itMap->first);
@@ -62,7 +63,7 @@ void ObjetAgrege::Sauvegarder(ofstream& f){
 set<string> ObjetAgrege::getObjetsGeo(){
 	set<string> set;
 	map<string, ElementGeo*>::iterator it;
-	for(it=contenu.begin();it!=contenu.end();it++){
+	for(it=contenu.begin();it!=contenu.end();++it){
 		string nomObjet=it->second->getNom();
 		set.insert(nomObjet);
 	}

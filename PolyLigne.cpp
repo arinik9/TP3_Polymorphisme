@@ -12,7 +12,7 @@
 //	Ligne(nom1, points[0], points[1], points[2], points[3]);
 //	autresPoints = points;
 //	autresPoints.erase(autresPoints.begin(), autresPoints.begin() + 4);
-//
+//	
 //}
 
 
@@ -24,7 +24,7 @@ void PolyLigne::Afficher(){
 	cout << "PL " << nom << " " << point1.getX() << " " << point1.getY() << " " << point2.getX() << " " << point2.getY();
 	if (autresPoints.size() != 0) {
 		vector<long>::iterator it;
-		for (it = autresPoints.begin()+4; it != autresPoints.end(); it++){
+		for (it = autresPoints.begin()+4; it != autresPoints.end(); ++it){
 			cout << " " << *it;
 		}
 	}
@@ -39,7 +39,7 @@ void PolyLigne::Deplacer(long x, long y, vector<string>& objetsDeplaces){
 	if (autresPoints.size() != 0) {
 		vector<long>::iterator it;
 		bool pair = false;
-		for (it = autresPoints.begin() + 4; it != autresPoints.end(); it++){
+		for (it = autresPoints.begin() + 4; it != autresPoints.end(); ++it){
 			if (!pair){
 				*it = *it + x;
 				pair = true;
@@ -66,9 +66,10 @@ vector<long> PolyLigne::getPoints(){
 	a.push_back(point1.getY());
 	a.push_back(point2.getX());
 	a.push_back(point2.getY());
-	for(it=autresPoints.begin()+4;it!=autresPoints.end();it++){
+	for(it=autresPoints.begin()+4;it!=autresPoints.end();++it){
 		a.push_back(*it);
 	}
 
 	return a;
 }
+
