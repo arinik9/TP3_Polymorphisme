@@ -1,0 +1,24 @@
+target = heritage
+objects = Point.o Rectangle.o Cercle.o Ligne.o PolyLigne.o ObjetAgrege.o main.o LectureEcriture.o Figure.o ElementGeo.o 
+CXX = g++
+CPPFLAGS = -I include
+.PHONY: all clean
+
+
+# Shouldn't need to change anything below here...
+
+
+
+OBJDIR = build
+VPATH = $(OBJDIR)
+OBJPROG = $(addprefix $(OBJDIR)/, $(target))
+
+all: $(OBJPROG)
+$(OBJPROG): $(addprefix $(OBJDIR)/, $(objects)) ; $(CXX) $(CPPFLAGS) $^ -o $@ 
+
+$(OBJDIR)/%.o : source/%.cpp ; $(CXX) $(CPPFLAGS) -c $< -o $@
+
+               
+                        
+
+
